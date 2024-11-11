@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Toast Notifier Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <!-- and it's easy to individually load additional languages -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+
+    <script>hljs.highlightAll();</script>
+    <style>
+        body { font-family: cursive, Arial, sans-serif; max-width: 800px; margin: auto; line-height: 1.6; padding: 20px; }
+        h1, h2, h3 { color: #333; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: system-ui, Arial, sans-serif;
+            font-size: 14px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Header row styles */
+        th {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        /* Cell styles */
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        /* Alternate row colors */
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        /* Hover effect for rows */
+        tr:hover {
+            background-color: #d1e5e7;
+            transition: background-color 0.3s;
+        }
+        th { background-color: #f4f4f4; color:#077695}
+        ul { list-style: none; padding: 0; }
+        ul li { margin: 5px 0; }
+        .section {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .demo-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            background: #3e767e;
+            color: white;
+            cursor: pointer;
+            transition: background 0.2s;
+            box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+        }
+
+        .demo-btn:hover {
+            background: #2c575d;
+        }
+
+        .custom-toast {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        code.hljs {
+            font-size: 15px;
+            color: #161616;
+            border: 1px solid lightgray;
+            border-radius: 5px;
+        }
+
+        .position-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .theme-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .custom-theme {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+        }
+
+        .minimal-toast {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+
+<h1>JS Toast Notifier</h1>
+<p>
+    JS Toast Notifier is a lightweight JavaScript library designed to provide a robust, flexible solution for displaying toast notifications. It offers a visually appealing, <strong>full Accessibility enabled </strong> , and customizable notification system, ideal for alerting users within web applications without being overly intrusive. With no dependencies and a straightforward setup, this library enables developers to quickly integrate notifications that enhance user interaction through positioning flexibility, droplet-style connectors, and pause-on-hover functionality. Below is a detailed description of the library's core features, configuration options, and API.
+</p>
+<p>
+<h2 style="font-weight: bold;">Accessibility and Browser Support</h2>
+JS Toast Notifier is designed with accessibility in mind. It adheres to WCAG 2.1 standards, including ARIA labels for screen readers, support for keyboard navigation, and respect for user preferences such as reduced motion. This cross-browser library is compatible with the latest versions of Chrome, Firefox, Safari, Edge, and Opera.
+</p>
+<p>
+<h2> Custom Themes and CSS Customization</h2>
+JS Toast Notifier supports custom themes and offers CSS class selectors for additional styling. For example, users can define custom colors, sizes, or animations that better align with their application's brand and style guidelines.
+</p>
+<h2>Key Features</h2>
+<ul>
+    <li>📍 Flexible positioning (top, bottom, left, right)</li>
+    <li>📚 Automatic stacking of multiple notifications</li>
+    <li>🔗 Anchor element support with droplet-style connectors</li>
+    <li>🎨 Customizable themes and timeouts</li>
+    <li>⏸️ Pause on hover functionality</li>
+    <li>✨ Smooth animations with progress bar</li>
+    <li>🚫 Optional close button</li>
+    <li>♿ WCAG 2.1 accessible</li>
+    <li>0️⃣ Zero dependencies</li>
+</ul>
+
+<h2>Installation</h2>
+<pre><code class="javascript">npm install js-toast-notifier</code></pre>
+
+<h2>Basic Usage</h2>
+<pre><code class="javascript">
+import ToastNotifier from 'js-toast-notifier';
+
+// Initialize with default options
+const toast = new ToastNotifier();
+
+// Show a basic toast
+toast.show('Hello, World!');
+
+// Show different types of toasts
+toast.success('Operation completed!');
+toast.error('Something went wrong!');
+toast.info('Here is some information.');
+toast.warning('Please be careful!');
+</code></pre>
+
+<h2>Configuration Options</h2>
+
+<h3>Global Configuration</h3>
+<p>When initializing the toast instance, you can set default options for all notifications:</p>
+<pre><code class="javascript">
+const toast = new ToastNotifier({
+  position: 'top-right',      // Default position
+  timeout: 5000,             // Default timeout in milliseconds
+  theme: 'light',           // Default theme
+  showCloseButton: true,    // Show close button
+  pauseOnHover: true,       // Pause timer on hover
+  showProgress: true,       // Show progress bar
+  progressHeight: '4px',    // Progress bar height
+  progressColor: '#fff',    // Progress bar color
+  progressBackground: 'rgba(255, 255, 255, 0.2)' // Progress background
+});
+</code></pre>
+
+<h3>Individual Toast Configuration</h3>
+<p>Each toast can override the global configuration:</p>
+<pre><code class="javascript">
+// Custom themed toast
+toast.show('Custom theme!', {
+  theme: { backgroundColor: '#1a1a1a', textColor: '#ffffff' },
+  customClass: 'my-custom-toast'
+});
+
+// Anchored toast with custom position
+toast.show('Anchored to button!', {
+  anchor: document.getElementById('my-button'),
+  position: 'top',
+  timeout: 3000
+});
+
+// Toast with custom progress bar
+toast.show('Custom progress!', {
+  progressHeight: '6px',
+  progressColor: '#00ff00',
+  progressBackground: 'rgba(0, 0, 0, 0.3)',
+  pauseOnHover: true
+});
+
+// Infinite toast (no timeout)
+toast.show('Will not auto-close', { timeout: 0, showProgress: false });
+</code></pre>
+
+<h2>API Reference</h2>
+
+<h3>Constructor Options</h3>
+<table>
+    <tr>
+        <th>Option</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Possible Values</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>position</td>
+        <td>string</td>
+        <td>'top-right'</td>
+        <td>'top', 'bottom', 'left', 'right', 'top-left', 'top-right', 'bottom-left', 'bottom-right'</td>
+        <td>Toast position</td>
+    </tr>
+    <tr>
+        <td>timeout</td>
+        <td>number</td>
+        <td>5000</td>
+        <td>Any positive integer, 0 (for no auto-close)</td>
+        <td>Auto-close duration in milliseconds</td>
+    </tr>
+    <tr>
+        <td>theme</td>
+        <td>string | object</td>
+        <td>'light'</td>
+        <td>'light', 'dark', { backgroundColor: string, textColor: string, iconColor?: string }</td>
+        <td>Theme name or custom theme object</td>
+    </tr>
+    <tr>
+        <td>showCloseButton</td>
+        <td>boolean</td>
+        <td>true</td>
+        <td>true, false</td>
+        <td>Show/hide close button</td>
+    </tr>
+    <tr>
+        <td>pauseOnHover</td>
+        <td>boolean</td>
+        <td>true</td>
+        <td>true, false</td>
+        <td>Pause timer on hover</td>
+    </tr>
+    <tr>
+        <td>showProgress</td>
+        <td>boolean</td>
+        <td>true</td>
+        <td>true, false</td>
+        <td>Show/hide progress bar</td>
+    </tr>
+    <tr>
+        <td>progressHeight</td>
+        <td>string</td>
+        <td>'4px'</td>
+        <td>Any valid CSS height value (e.g., '4px', '2em')</td>
+        <td>Progress bar height</td>
+    </tr>
+    <tr>
+        <td>progressColor</td>
+        <td>string</td>
+        <td>-</td>
+        <td>Any valid CSS color value (e.g., '#fff', 'rgba(0, 0, 0, 0.5)')</td>
+        <td>Progress bar color</td>
+    </tr>
+    <tr>
+        <td>progressBackground</td>
+        <td>string</td>
+        <td>-</td>
+        <td>Any valid CSS color value (e.g., '#eee', 'rgba(255, 255, 255, 0.2)')</td>
+        <td>Progress bar background color</td>
+    </tr>
+</table>
+
+
+<h3>Methods</h3>
+
+<h4><pre><code class="javascript">show(message, options?)</code></pre></h4>
+<p>Shows a toast notification with optional configuration.</p>
+<pre><code class="javascript">
+toast.show('Message', {
+  type: 'default',
+  timeout: 3000
+});
+</code></pre>
+
+<h4><pre><code class="javascript">success(message, options?)</code></pre></h4>
+<p>Shows a success toast.</p>
+<pre><code class="javascript">toast.success('Operation completed!', { timeout: 3000 });</code></pre>
+
+<h4><pre><code class="javascript">error(message, options?)</code></pre></h4>
+<p>Shows an error toast.</p>
+<pre><code class="javascript">toast.error('Failed to save!', { timeout: 0 });</code></pre>
+
+<h4><pre><code class="javascript">info(message, options?)</code></pre></h4>
+<p>Shows an info toast.</p>
+<pre><code class="javascript">toast.info('New updates available');</code></pre>
+
+<h4><pre><code class="javascript">warning(message, options?)</code></pre></h4>
+<p>Shows a warning toast.</p>
+<pre><code class="javascript">toast.warning('Low disk space');</code></pre>
+
+<h3>Custom Themes</h3>
+<p>Create custom themes by providing a theme object:</p>
+<pre><code class="javascript">
+const toast = new ToastNotifier({
+  theme: {
+    backgroundColor: '#1a1a1a',
+    textColor: '#ffffff',
+    iconColor: '#00ff00'
+  }
+});
+</code></pre>
+
+<h3>CSS Customization</h3>
+<p>The package provides CSS classes for custom styling:</p>
+<pre><code class="css">
+.toast {
+  /* Custom styles */
+}
+.toast-progress {
+  --progress-height: 6px;
+  --progress-color: #00ff00;
+  --progress-background: rgba(0, 0, 0, 0.2);
+}
+.toast:hover {
+  transform: scale(1.02);
+}
+</code></pre>
+
+<h2>Accessibility</h2>
+<ul>
+    <li>Follows WCAG 2.1 guidelines</li>
+    <li>Proper ARIA attributes</li>
+    <li>Keyboard navigation support</li>
+    <li>Screen reader friendly messages</li>
+    <li>Respects reduced motion preferences</li>
+</ul>
+
+<h2>Browser Support</h2>
+<ul>
+    <li>Chrome (latest)</li>
+    <li>Firefox (latest)</li>
+    <li>Safari (latest)</li>
+    <li>Edge (latest)</li>
+    <li>Opera (latest)</li>
+</ul>
+
+<h2>License</h2>
+<p>MIT</p>
+
+
+
+
+<div class="section">
+        <h2>Basic Types</h2>
+        <div class="button-grid">
+            <button class="demo-btn" id="success-toast">Success Toast</button>
+            <button class="demo-btn" id="error-toast">Error Toast</button>
+            <button class="demo-btn" id="info-toast">Info Toast</button>
+            <button class="demo-btn" id="warning-toast">Warning Toast</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Positioning</h2>
+        <div class="button-grid">
+            <button class="demo-btn" id="top-left">Top Left</button>
+            <button class="demo-btn" id="top">Top</button>
+            <button class="demo-btn" id="top-right">Top Right</button>
+            <button class="demo-btn" id="bottom-left">Bottom Left</button>
+            <button class="demo-btn" id="bottom">Bottom</button>
+            <button class="demo-btn" id="bottom-right">Bottom Right</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Advanced Features</h2>
+        <div class="button-grid">
+            <!-- <button class="demo-btn" id="anchor-toast">Anchored Toast</button> -->
+            <button class="demo-btn" id="infinite-toast">Infinite Toast</button>
+            <button class="demo-btn" id="no-progress">No Progress Bar</button>
+            <button class="demo-btn" id="no-close">No Close Button</button>
+            <button class="demo-btn" id="pause-disabled">No Pause on Hover</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Themes & Styling</h2>
+        <div class="button-grid">
+            <button class="demo-btn" id="custom-theme">Custom Theme</button>
+            <button class="demo-btn" id="gradient-toast">Gradient Background</button>
+            <button class="demo-btn" id="minimal-toast">Minimal Style</button>
+            <button class="demo-btn" id="custom-progress">Custom Progress</button>
+        </div>
+    </div>
+
+
+</body>
+<script type="module">
+        import {ToastNotifier} from '../dist/index.js';
+
+        // Initialize with default options
+        const toast = new ToastNotifier({
+            position: 'top-right',
+            timeout: 3000,
+            theme: 'light',
+            pauseOnHover: true
+        });
+
+        // Basic Types
+        document.getElementById('success-toast').addEventListener('click', () => {
+            toast.success('Operation completed successfully!');
+        });
+
+        document.getElementById('error-toast').addEventListener('click', () => {
+            toast.error('An error occurred while processing your request.');
+        });
+
+        document.getElementById('info-toast').addEventListener('click', () => {
+            toast.info('New updates are available for installation.');
+        });
+
+        document.getElementById('warning-toast').addEventListener('click', () => {
+            toast.warning('Your session will expire in 5 minutes.');
+        });
+
+        // Positioning
+        const positions = ['top-left', 'top', 'top-right', 'bottom-left', 'bottom', 'bottom-right'];
+        positions.forEach(pos => {
+            document.getElementById(pos).addEventListener('click', () => {
+                toast.show(`Toast positioned at ${pos}`, { position: pos, progressBackground: 'rgba(0, 0, 0, 0.3)' });
+            });
+        });
+
+        // Advanced Features
+        // document.getElementById('anchor-toast').addEventListener('click', (e) => {
+        //     toast.show('This toast is anchored to the button!', {
+        //         anchor: e.target,
+        //         position: 'top',
+        //         timeout: 5000
+        //     });
+        // });
+
+        document.getElementById('infinite-toast').addEventListener('click', () => {
+            toast.info('This toast will not auto-close', {
+                timeout: 0,
+                showProgress: false
+            });
+        });
+
+        document.getElementById('no-progress').addEventListener('click', () => {
+            toast.show('Toast without progress bar', {
+                showProgress: false
+            });
+        });
+
+        document.getElementById('no-close').addEventListener('click', () => {
+            toast.show('Toast without close button', {
+                showCloseButton: false,
+                timeout: 5000,
+                progressBackground: 'rgba(0, 0, 0, 0.3)',
+            });
+        });
+
+        document.getElementById('pause-disabled').addEventListener('click', () => {
+            toast.show('This toast will not pause on hover', {
+                pauseOnHover: false
+            });
+        });
+
+        // Themes & Styling
+        document.getElementById('custom-theme').addEventListener('click', () => {
+            toast.show('Custom themed toast!', {
+                theme: {
+                    backgroundColor: '#1a1a1a',
+                    textColor: '#ffffff',
+                    iconColor: '#00ff00'
+                }
+            });
+        });
+
+        document.getElementById('gradient-toast').addEventListener('click', () => {
+            toast.show('Gradient background toast!', {
+                customClass: 'custom-toast',
+                timeout: 5000, 
+                theme: {
+                    textColor: "white"
+                }
+            });
+        });
+
+        document.getElementById('minimal-toast').addEventListener('click', () => {
+            toast.show('Minimal style toast', {
+                customClass: 'minimal-toast'
+            });
+        });
+
+        document.getElementById('custom-progress').addEventListener('click', () => {
+            toast.show('Custom progress bar styling', {
+                timeout: 5000,
+                progressHeight: '6px',
+                progressColor: '#00ff00',
+                progressBackground: 'rgba(0, 0, 0, 0.3)',
+                pauseOnHover: true
+            });
+        });
+    </script>
+</html>
