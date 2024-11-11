@@ -3,23 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Droplet Toast Demo</title>
+    <title>JS Toast Notifier Documentation</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        h1, h2 {
-            color: #1a1a1a;
-        }
-
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: auto; line-height: 1.6; padding: 20px; }
+        h1, h2, h3 { color: #333; }
+        code { background: #f4f4f4; padding: 2px 4px; border-radius: 4px; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 4px; overflow: auto; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        table, th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #f4f4f4; }
+        ul { list-style: none; padding: 0; }
+        ul li { margin: 5px 0; }
         .section {
             background: #f5f5f5;
             padding: 20px;
@@ -85,9 +79,185 @@
     </style>
 </head>
 <body>
-    <h1>Droplet Toast Demo</h1>
-    
-    <div class="section">
+
+<h1>JS Toast Notifier</h1>
+<p>A lightweight toast notification package with anchor support, droplet-style connectors, and pause-on-hover functionality.</p>
+
+<h2>Features</h2>
+<ul>
+    <li>📍 Flexible positioning (top, bottom, left, right)</li>
+    <li>📚 Automatic stacking of multiple notifications</li>
+    <li>🔗 Anchor element support with droplet-style connectors</li>
+    <li>🎨 Customizable themes and timeouts</li>
+    <li>⏸️ Pause on hover functionality</li>
+    <li>✨ Smooth animations with progress bar</li>
+    <li>🚫 Optional close button</li>
+    <li>♿ WCAG 2.1 accessible</li>
+    <li>0️⃣ Zero dependencies</li>
+</ul>
+
+<h2>Installation</h2>
+<pre><code>npm install js-toast-notifier</code></pre>
+
+<h2>Basic Usage</h2>
+<pre><code>
+import ToastNotifier from 'js-toast-notifier';
+
+// Initialize with default options
+const toast = new ToastNotifier();
+
+// Show a basic toast
+toast.show('Hello, World!');
+
+// Show different types of toasts
+toast.success('Operation completed!');
+toast.error('Something went wrong!');
+toast.info('Here is some information.');
+toast.warning('Please be careful!');
+</code></pre>
+
+<h2>Configuration Options</h2>
+
+<h3>Global Configuration</h3>
+<p>When initializing the toast instance, you can set default options for all notifications:</p>
+<pre><code>
+const toast = new ToastNotifier({
+  position: 'top-right',      // Default position
+  timeout: 5000,             // Default timeout in milliseconds
+  theme: 'light',           // Default theme
+  showCloseButton: true,    // Show close button
+  pauseOnHover: true,       // Pause timer on hover
+  showProgress: true,       // Show progress bar
+  progressHeight: '4px',    // Progress bar height
+  progressColor: '#fff',    // Progress bar color
+  progressBackground: 'rgba(255, 255, 255, 0.2)' // Progress background
+});
+</code></pre>
+
+<h3>Individual Toast Configuration</h3>
+<p>Each toast can override the global configuration:</p>
+<pre><code>
+// Custom themed toast
+toast.show('Custom theme!', {
+  theme: { backgroundColor: '#1a1a1a', textColor: '#ffffff' },
+  customClass: 'my-custom-toast'
+});
+
+// Anchored toast with custom position
+toast.show('Anchored to button!', {
+  anchor: document.getElementById('my-button'),
+  position: 'top',
+  timeout: 3000
+});
+
+// Toast with custom progress bar
+toast.show('Custom progress!', {
+  progressHeight: '6px',
+  progressColor: '#00ff00',
+  progressBackground: 'rgba(0, 0, 0, 0.3)',
+  pauseOnHover: true
+});
+
+// Infinite toast (no timeout)
+toast.show('Will not auto-close', { timeout: 0, showProgress: false });
+</code></pre>
+
+<h2>API Reference</h2>
+
+<h3>Constructor Options</h3>
+<table>
+    <tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr>
+    <tr><td>position</td><td>string</td><td>'top-right'</td><td>Toast position</td></tr>
+    <tr><td>timeout</td><td>number</td><td>5000</td><td>Auto-close duration in milliseconds</td></tr>
+    <tr><td>theme</td><td>string|object</td><td>'light'</td><td>Theme name or custom theme object</td></tr>
+    <tr><td>showCloseButton</td><td>boolean</td><td>true</td><td>Show/hide close button</td></tr>
+    <tr><td>pauseOnHover</td><td>boolean</td><td>true</td><td>Pause timer on hover</td></tr>
+    <tr><td>showProgress</td><td>boolean</td><td>true</td><td>Show/hide progress bar</td></tr>
+    <tr><td>progressHeight</td><td>string</td><td>'4px'</td><td>Progress bar height</td></tr>
+    <tr><td>progressColor</td><td>string</td><td>-</td><td>Progress bar color</td></tr>
+    <tr><td>progressBackground</td><td>string</td><td>-</td><td>Progress bar background color</td></tr>
+</table>
+
+<h3>Methods</h3>
+
+<h4><code>show(message, options?)</code></h4>
+<p>Shows a toast notification with optional configuration.</p>
+<pre><code>
+toast.show('Message', {
+  type: 'default',
+  timeout: 3000
+});
+</code></pre>
+
+<h4><code>success(message, options?)</code></h4>
+<p>Shows a success toast.</p>
+<pre><code>toast.success('Operation completed!', { timeout: 3000 });</code></pre>
+
+<h4><code>error(message, options?)</code></h4>
+<p>Shows an error toast.</p>
+<pre><code>toast.error('Failed to save!', { timeout: 0 });</code></pre>
+
+<h4><code>info(message, options?)</code></h4>
+<p>Shows an info toast.</p>
+<pre><code>toast.info('New updates available');</code></pre>
+
+<h4><code>warning(message, options?)</code></h4>
+<p>Shows a warning toast.</p>
+<pre><code>toast.warning('Low disk space');</code></pre>
+
+<h3>Custom Themes</h3>
+<p>Create custom themes by providing a theme object:</p>
+<pre><code>
+const toast = new ToastNotifier({
+  theme: {
+    backgroundColor: '#1a1a1a',
+    textColor: '#ffffff',
+    iconColor: '#00ff00'
+  }
+});
+</code></pre>
+
+<h3>CSS Customization</h3>
+<p>The package provides CSS classes for custom styling:</p>
+<pre><code>
+.toast {
+  /* Custom styles */
+}
+.toast-progress {
+  --progress-height: 6px;
+  --progress-color: #00ff00;
+  --progress-background: rgba(0, 0, 0, 0.2);
+}
+.toast:hover {
+  transform: scale(1.02);
+}
+</code></pre>
+
+<h2>Accessibility</h2>
+<ul>
+    <li>Follows WCAG 2.1 guidelines</li>
+    <li>Proper ARIA attributes</li>
+    <li>Keyboard navigation support</li>
+    <li>Screen reader friendly messages</li>
+    <li>Respects reduced motion preferences</li>
+</ul>
+
+<h2>Browser Support</h2>
+<ul>
+    <li>Chrome (latest)</li>
+    <li>Firefox (latest)</li>
+    <li>Safari (latest)</li>
+    <li>Edge (latest)</li>
+    <li>Opera (latest)</li>
+</ul>
+
+<h2>License</h2>
+<p>MIT</p>
+
+
+
+
+<div class="section">
         <h2>Basic Types</h2>
         <div class="button-grid">
             <button id="success-toast">Success Toast</button>
@@ -130,8 +300,10 @@
         </div>
     </div>
 
-    <script type="module">
-        import ToastNotifier from '../dist/index.js';
+
+</body>
+<script type="module">
+        import {ToastNotifier} from '../dist/index.js';
 
         // Initialize with default options
         const toast = new ToastNotifier({
@@ -237,5 +409,4 @@
             });
         });
     </script>
-</body>
 </html>
