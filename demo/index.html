@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Droplet Toast Demo</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1, h2 {
+            color: #1a1a1a;
+        }
+
+        .section {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background: #0070f3;
+            color: white;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #0051b3;
+        }
+
+        .custom-toast {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .code-block {
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+
+        .position-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .theme-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .custom-theme {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+        }
+
+        .minimal-toast {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+    <h1>Droplet Toast Demo</h1>
+    
+    <div class="section">
+        <h2>Basic Types</h2>
+        <div class="button-grid">
+            <button id="success-toast">Success Toast</button>
+            <button id="error-toast">Error Toast</button>
+            <button id="info-toast">Info Toast</button>
+            <button id="warning-toast">Warning Toast</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Positioning</h2>
+        <div class="position-controls">
+            <button id="top-left">Top Left</button>
+            <button id="top">Top</button>
+            <button id="top-right">Top Right</button>
+            <button id="bottom-left">Bottom Left</button>
+            <button id="bottom">Bottom</button>
+            <button id="bottom-right">Bottom Right</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Advanced Features</h2>
+        <div class="button-grid">
+            <button id="anchor-toast">Anchored Toast</button>
+            <button id="infinite-toast">Infinite Toast</button>
+            <button id="no-progress">No Progress Bar</button>
+            <button id="no-close">No Close Button</button>
+            <button id="pause-disabled">No Pause on Hover</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Themes & Styling</h2>
+        <div class="button-grid">
+            <button id="custom-theme">Custom Theme</button>
+            <button id="gradient-toast">Gradient Background</button>
+            <button id="minimal-toast">Minimal Style</button>
+            <button id="custom-progress">Custom Progress</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import ToastNotifier from '../dist/index.js';
+
+        // Initialize with default options
+        const toast = new ToastNotifier({
+            position: 'top-right',
+            timeout: 3000,
+            theme: 'light',
+            pauseOnHover: true
+        });
+
+        // Basic Types
+        document.getElementById('success-toast').addEventListener('click', () => {
+            toast.success('Operation completed successfully!');
+        });
+
+        document.getElementById('error-toast').addEventListener('click', () => {
+            toast.error('An error occurred while processing your request.');
+        });
+
+        document.getElementById('info-toast').addEventListener('click', () => {
+            toast.info('New updates are available for installation.');
+        });
+
+        document.getElementById('warning-toast').addEventListener('click', () => {
+            toast.warning('Your session will expire in 5 minutes.');
+        });
+
+        // Positioning
+        const positions = ['top-left', 'top', 'top-right', 'bottom-left', 'bottom', 'bottom-right'];
+        positions.forEach(pos => {
+            document.getElementById(pos).addEventListener('click', () => {
+                toast.show(`Toast positioned at ${pos}`, { position: pos });
+            });
+        });
+
+        // Advanced Features
+        document.getElementById('anchor-toast').addEventListener('click', (e) => {
+            toast.show('This toast is anchored to the button!', {
+                anchor: e.target,
+                position: 'top',
+                timeout: 5000
+            });
+        });
+
+        document.getElementById('infinite-toast').addEventListener('click', () => {
+            toast.info('This toast will not auto-close', {
+                timeout: 0,
+                showProgress: false
+            });
+        });
+
+        document.getElementById('no-progress').addEventListener('click', () => {
+            toast.show('Toast without progress bar', {
+                showProgress: false
+            });
+        });
+
+        document.getElementById('no-close').addEventListener('click', () => {
+            toast.show('Toast without close button', {
+                showCloseButton: false
+            });
+        });
+
+        document.getElementById('pause-disabled').addEventListener('click', () => {
+            toast.show('This toast will not pause on hover', {
+                pauseOnHover: false
+            });
+        });
+
+        // Themes & Styling
+        document.getElementById('custom-theme').addEventListener('click', () => {
+            toast.show('Custom themed toast!', {
+                theme: {
+                    backgroundColor: '#1a1a1a',
+                    textColor: '#ffffff',
+                    iconColor: '#00ff00'
+                }
+            });
+        });
+
+        document.getElementById('gradient-toast').addEventListener('click', () => {
+            toast.show('Gradient background toast!', {
+                customClass: 'custom-toast',
+                timeout: 5000, 
+                theme: {
+                    textColor: "white"
+                }
+            });
+        });
+
+        document.getElementById('minimal-toast').addEventListener('click', () => {
+            toast.show('Minimal style toast', {
+                customClass: 'minimal-toast'
+            });
+        });
+
+        document.getElementById('custom-progress').addEventListener('click', () => {
+            toast.show('Custom progress bar styling', {
+                timeout: 5000,
+                progressHeight: '6px',
+                progressColor: '#00ff00',
+                progressBackground: 'rgba(0, 0, 0, 0.3)',
+                pauseOnHover: true
+            });
+        });
+    </script>
+</body>
+</html>
