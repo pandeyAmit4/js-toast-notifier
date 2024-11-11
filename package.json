@@ -39,11 +39,9 @@
 	"bugs": {
 		"url": "https://github.com/pandeyAmit4/js-toast-notifier/issues"
 	},
-	"devDependencies": {
-		"cssnano": "^7.0.6",
-		"esbuild": "^0.19.12",
-		"esbuild-plugin-inline-css": "^0.0.1",
-		"postcss": "^8.4.48",
-		"postcss-import": "^16.1.0"
-	}
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	]
 }
