@@ -12,7 +12,7 @@
 
     <script>hljs.highlightAll();</script>
     <style>
-        body { font-family: cursive, Arial, sans-serif; max-width: 800px; margin: auto; line-height: 1.6; padding: 20px; }
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: auto; line-height: 1.6; padding: 20px; }
         h1, h2, h3 { color: #333; }
         table {
             width: 100%;
@@ -145,10 +145,10 @@ JS Toast Notifier supports custom themes and offers CSS class selectors for addi
 
 <h2>Installation</h2>
 <pre><code class="javascript">npm install js-toast-notifier</code></pre>
-
+<a href="#examples" style="font-size: 22px; font-weight: bold;">Check Examples</a>
 <h2>Basic Usage</h2>
 <pre><code class="javascript">
-import ToastNotifier from 'js-toast-notifier';
+import {ToastNotifier} from 'js-toast-notifier';
 
 // Initialize with default options
 const toast = new ToastNotifier();
@@ -283,6 +283,13 @@ toast.show('Will not auto-close', { timeout: 0, showProgress: false });
         <td>Any valid CSS color value (e.g., '#eee', 'rgba(255, 255, 255, 0.2)')</td>
         <td>Progress bar background color</td>
     </tr>
+     <tr>
+        <td>customClass</td>
+        <td>string</td>
+        <td>-</td>
+        <td>Any valid CSS class</td>
+        <td>Could be used for themes or tracking</td>
+    </tr>
 </table>
 
 
@@ -312,6 +319,9 @@ toast.show('Message', {
 <h4><pre><code class="javascript">warning(message, options?)</code></pre></h4>
 <p>Shows a warning toast.</p>
 <pre><code class="javascript">toast.warning('Low disk space');</code></pre>
+<h2>Destroy</h2>
+<p>Remove All Toasts at once</p>
+<pre><code class="javascript">toast.destroy();</code></pre>
 
 <h3>Custom Themes</h3>
 <p>Create custom themes by providing a theme object:</p>
@@ -365,7 +375,7 @@ const toast = new ToastNotifier({
 
 
 
-<div class="section">
+<div class="section" id="examples">
         <h2>Basic Types</h2>
         <div class="button-grid">
             <button class="demo-btn" id="success-toast">Success Toast</button>
@@ -420,7 +430,7 @@ const toast = new ToastNotifier({
             theme: 'light',
             pauseOnHover: true
         });
-
+        window.ToastNotifier = ToastNotifier
         // Basic Types
         document.getElementById('success-toast').addEventListener('click', () => {
             toast.success('Operation completed successfully!');
@@ -471,7 +481,7 @@ const toast = new ToastNotifier({
         document.getElementById('no-close').addEventListener('click', () => {
             toast.show('Toast without close button', {
                 showCloseButton: false,
-                timeout: 5000,
+                timeout: 500000,
                 progressBackground: 'rgba(0, 0, 0, 0.3)',
             });
         });
