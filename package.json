@@ -1,0 +1,25 @@
+{
+	"name": "js-toast-notifier",
+	"version": "1.0.0",
+	"description": "ToastfierJS is a lightweight JavaScript library for customizable toast notifications, supporting dynamic positioning, themes, and notification types with icons—ideal for clean, dependency-free alerts in any web app.",
+	"main": "dist/index.js",
+	"scripts": {
+		"build": "esbuild src/index.js --bundle --outfile=dist/index.js --format=esm",
+		"dev": "esbuild src/index.js --bundle --outfile=dist/index.js --format=esm --watch",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [
+		"toast",
+		"notification",
+		"vanilla-js",
+		"droplet",
+        "Javascript",
+        "toast-notifier",
+        "toast-notifications"
+	],
+	"author": "",
+	"license": "MIT",
+	"devDependencies": {
+		"esbuild": "^0.19.5"
+	}
+}
