@@ -138,4 +138,4 @@ class ToastNotifier {
 	}
 }
 
-export default ToastNotifier
+export { ToastNotifier }
