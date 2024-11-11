@@ -4,7 +4,7 @@ import { positions, notificationTypes } from "./constants"
 import { calculatePosition } from "./positioning"
 import "./styles.js"
 
-class DropletToast {
+class ToastNotifier {
 	constructor(options = {}) {
 		this.container = createToastContainer()
 		this.options = {
@@ -138,4 +138,4 @@ class DropletToast {
 	}
 }
 
-export default DropletToast
+export default ToastNotifier
