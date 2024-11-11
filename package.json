@@ -4,7 +4,7 @@
 	"description": "ToastfierJS is a lightweight JavaScript library for customizable toast notifications, supporting dynamic positioning, themes, and notification types with icons—ideal for clean, dependency-free alerts in any web app.",
 	"main": "dist/index.js",
 	"scripts": {
-		"build": "esbuild src/index.js --bundle --outfile=dist/index.js --format=esm",
+		"build": "esbuild src/index.js --bundle --outfile=dist/index.js --format=esm --minify",
 		"dev": "esbuild src/index.js --bundle --outfile=dist/index.js --format=esm --watch",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
@@ -13,12 +13,32 @@
 		"notification",
 		"vanilla-js",
 		"droplet",
-        "Javascript",
-        "toast-notifier",
-        "toast-notifications"
+		"javascript",
+		"toast-notifier",
+		"toast-notifications",
+		"alert",
+		"frontend",
+		"user-interface",
+		"UI",
+		"web-development",
+		"lightweight",
+		"dependency-free",
+		"popup",
+		"dynamic-positioning"
 	],
-	"author": "",
+	"author": {
+		"name": "Amit Pandey",
+		"email": "pandey.amitx@gmail.com"
+	},
 	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/pandeyAmit4/js-toast-notifier.git"
+	},
+	"homepage": "https://github.com/pandeyAmit4/js-toast-notifier#readme",
+	"bugs": {
+		"url": "https://github.com/pandeyAmit4/js-toast-notifier/issues"
+	},
 	"devDependencies": {
 		"esbuild": "^0.19.5"
 	}
