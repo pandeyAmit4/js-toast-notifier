@@ -1,4 +1,3 @@
-const styles = `
 .toast {
   position: fixed;
   min-width: 280px;
@@ -204,8 +203,3 @@ const styles = `
     transition: none;
   }
 }
-`
-
-const styleSheet = document.createElement("style")
-styleSheet.textContent = styles
-document.head.appendChild(styleSheet)
