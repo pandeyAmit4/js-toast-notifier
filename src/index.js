@@ -2,7 +2,7 @@ import { createToastContainer, updateContainerPosition } from "./toast-container
 import { createToast } from "./toast"
 import { positions, notificationTypes } from "./constants"
 import { calculatePosition } from "./positioning"
-import "./styles.js"
+import "./styles.css"
 
 class ToastNotifier {
 	constructor(options = {}) {
