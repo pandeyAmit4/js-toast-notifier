@@ -50,7 +50,7 @@ const styles = `
 .toast-close {
   background: none;
   border: 2px solid transparent;
-  padding: 8px;
+  padding: 4px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -60,7 +60,11 @@ const styles = `
   border-radius: 4px;
   margin: -4px;
 }
-
+.toast-close svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
 .toast-close:hover {
   opacity: 1;
   background: rgba(0, 0, 0, 0.1);

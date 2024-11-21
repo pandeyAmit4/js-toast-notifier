@@ -23,10 +23,10 @@ npm install js-toast-notifier
 ## Basic Usage
 
 ```javascript
-import DropletToast from 'js-toast-notifier';
+import ToastNotifier from 'js-toast-notifier';
 
 // Initialize with default options
-const toast = new DropletToast();
+const toast = new ToastNotifier();
 
 // Show a basic toast
 toast.show('Hello, World!');
@@ -45,7 +45,7 @@ toast.warning('Please be careful!');
 When initializing the toast instance, you can set default options for all notifications:
 
 ```javascript
-const toast = new DropletToast({
+const toast = new ToastNotifier({
   position: 'top-right',      // Default position
   timeout: 5000,             // Default timeout in milliseconds
   theme: 'light',           // Default theme
@@ -160,7 +160,7 @@ toast.warning('Low disk space');
 Create custom themes by providing a theme object:
 
 ```javascript
-const toast = new DropletToast({
+const toast = new ToastNotifier({
   theme: {
     backgroundColor: '#1a1a1a',
     textColor: '#ffffff',
