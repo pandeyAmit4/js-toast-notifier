@@ -25,6 +25,9 @@ npm install js-toast-notifier
 ```javascript
 import ToastNotifier from 'js-toast-notifier';
 
+// styling
+import "js-toast-notifier/dist/toast.css"
+
 // Initialize with default options
 const toast = new ToastNotifier();
 
