@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JS Toast Notifier Documentation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
-    <link rel="stylesheet" href="../dist/toast.css">
+    <!-- <link rel="stylesheet" href="../dist/toast.css"> -->
+    <link rel="stylesheet" href="https://github.com/pandeyAmit4/js-toast-notifier/blob/main/dist/toast.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://github.com/pandeyAmit4/js-toast-notifier/blob/main/dist/index.js"></script>
 
     <!-- and it's easy to individually load additional languages -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
 
     <script>hljs.highlightAll();</script>
     <style>
+      .toast{align-items:center;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.15);display:flex;font-size:1rem;gap:12px;line-height:1.5;margin:8px;max-width:400px;min-width:280px;opacity:0;overflow:visible;padding:16px;position:fixed;transform:translateY(10px);transition:all .3s ease;z-index:1000}.toast:focus{outline:3px solid #2563eb;outline-offset:2px}.toast-show{opacity:1;transform:translateY(0)}.toast-content{flex:1;gap:12px}.toast-content,.toast-icon{align-items:center;display:flex}.toast-icon{flex-shrink:0}.toast-icon svg{height:24px;width:24px}.toast-close{align-items:center;background:none;border:2px solid transparent;border-radius:4px;cursor:pointer;display:flex;justify-content:center;margin:-4px;opacity:.8;padding:4px;transition:all .2s}.toast-close svg{fill:currentColor;height:20px;width:20px}.toast-close:hover{background:rgba(0,0,0,.1);opacity:1}.toast-close:focus{border-color:currentColor;opacity:1;outline:none}.toast-progress{background:var(--progress-background,hsla(0,0%,100%,.2));bottom:0;height:var(--progress-height,4px);left:0;overflow:hidden;position:absolute;transform-origin:left;width:100%}.toast-progress-bar{background:var(--progress-color,hsla(0,0%,100%,.7));height:100%;transform:scaleX(0);transform-origin:left;width:100%;will-change:transform}.toast-anchored{margin:0;position:absolute}.toast-droplet{height:12px;transform:rotate(45deg);transition:left .3s ease;width:12px;z-index:-1}.toast-droplet,.toast-droplet:after{background-color:inherit;position:absolute}.toast-droplet:after{bottom:-999px;content:"";left:50%;top:100%;transform:translateX(-50%);width:2px}.toast[data-point=top] .toast-droplet{left:var(--droplet-left,calc(50% - 6px));top:-6px}.toast[data-point=top] .toast-droplet:after{display:none}.toast[data-point=bottom] .toast-droplet{bottom:-6px;left:var(--droplet-left,calc(50% - 6px))}.toast[data-point=bottom] .toast-droplet:after{bottom:100%;height:var(--droplet-connector-height,0);top:auto}.toast[data-point=left] .toast-droplet{left:-6px;top:calc(50% - 6px)}.toast[data-point=right] .toast-droplet{right:-6px;top:calc(50% - 6px)}.droplet-toast-container{display:flex;flex-direction:column;height:100%;left:0;pointer-events:none;position:fixed;top:0;width:100%;z-index:1000}.droplet-toast-container .toast{pointer-events:auto;position:relative}.droplet-toast-container[data-position^=top]{align-items:flex-start}.droplet-toast-container[data-position^=top-center]{align-items:center}.droplet-toast-container[data-position^=bottom]{align-items:center;flex-direction:column-reverse}.droplet-toast-container[data-position$=right]{align-items:flex-end}.droplet-toast-container[data-position$=left]{align-items:flex-start}.droplet-toast-container[data-position=center]{align-items:center}@media (prefers-reduced-motion:reduce){.toast,.toast-droplet,.toast-progress-bar{transition:none}}.toast--dark{background:#1f2937;color:#fff}@media (max-width:480px){.toast{min-width:auto;width:calc(100vw - 40px)}.toast--full-width{border-radius:0;margin:0;width:100vw}}
         body { font-family: Arial, sans-serif; max-width: 800px; margin: auto; line-height: 1.6; padding: 20px; }
         h1, h2, h3 { color: #333; }
         /* Table styles */
@@ -171,6 +174,48 @@ th {
 <p>
     JS Toast Notifier is a lightweight JavaScript library designed to provide a robust, flexible solution for displaying toast notifications. It offers a visually appealing, <strong>full Accessibility enabled </strong> , and customizable notification system, ideal for alerting users within web applications without being overly intrusive. With no dependencies and a straightforward setup, this library enables developers to quickly integrate notifications that enhance user interaction through positioning flexibility, droplet-style connectors, and pause-on-hover functionality. Below is a detailed description of the library's core features, configuration options, and API.
 </p>
+<div class="section" id="examples">
+        <h2>Basic Types</h2>
+        <div class="button-grid">
+            <button class="demo-btn" id="success-toast">Success Toast</button>
+            <button class="demo-btn" id="error-toast">Error Toast</button>
+            <button class="demo-btn" id="info-toast">Info Toast</button>
+            <button class="demo-btn" id="warning-toast">Warning Toast</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Positioning</h2>
+        <div class="button-grid">
+            <button class="demo-btn" id="top-left">Top Left</button>
+            <button class="demo-btn" id="top-center">Top Center</button>
+            <button class="demo-btn" id="top-right">Top Right</button>
+            <button class="demo-btn" id="bottom-left">Bottom Left</button>
+            <button class="demo-btn" id="bottom-center">Bottom center</button>
+            <button class="demo-btn" id="bottom-right">Bottom Right</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Advanced Features</h2>
+        <div class="button-grid">
+            <!-- <button class="demo-btn" id="anchor-toast">Anchored Toast</button> -->
+            <button class="demo-btn" id="infinite-toast">Infinite Toast</button>
+            <button class="demo-btn" id="no-progress">No Progress Bar</button>
+            <button class="demo-btn" id="no-close">No Close Button</button>
+            <button class="demo-btn" id="pause-disabled">No Pause on Hover</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Themes & Styling</h2>
+        <div class="button-grid">
+            <button class="demo-btn" id="custom-theme">Custom Theme</button>
+            <button class="demo-btn" id="gradient-toast">Gradient Background</button>
+            <button class="demo-btn" id="minimal-toast">Minimal Style</button>
+            <button class="demo-btn" id="custom-progress">Custom Progress</button>
+        </div>
+    </div>
 <p>
 <h2 style="font-weight: bold;">Accessibility and Browser Support</h2>
 JS Toast Notifier is designed with accessibility in mind. It adheres to WCAG 2.1 standards, including ARIA labels for screen readers, support for keyboard navigation, and respect for user preferences such as reduced motion. This cross-browser library is compatible with the latest versions of Chrome, Firefox, Safari, Edge, and Opera.
@@ -427,48 +472,7 @@ const toast = new ToastNotifier({
 
 
 
-<div class="section" id="examples">
-        <h2>Basic Types</h2>
-        <div class="button-grid">
-            <button class="demo-btn" id="success-toast">Success Toast</button>
-            <button class="demo-btn" id="error-toast">Error Toast</button>
-            <button class="demo-btn" id="info-toast">Info Toast</button>
-            <button class="demo-btn" id="warning-toast">Warning Toast</button>
-        </div>
-    </div>
 
-    <div class="section">
-        <h2>Positioning</h2>
-        <div class="button-grid">
-            <button class="demo-btn" id="top-left">Top Left</button>
-            <button class="demo-btn" id="top-center">Top Center</button>
-            <button class="demo-btn" id="top-right">Top Right</button>
-            <button class="demo-btn" id="bottom-left">Bottom Left</button>
-            <button class="demo-btn" id="bottom-center">Bottom center</button>
-            <button class="demo-btn" id="bottom-right">Bottom Right</button>
-        </div>
-    </div>
-
-    <div class="section">
-        <h2>Advanced Features</h2>
-        <div class="button-grid">
-            <!-- <button class="demo-btn" id="anchor-toast">Anchored Toast</button> -->
-            <button class="demo-btn" id="infinite-toast">Infinite Toast</button>
-            <button class="demo-btn" id="no-progress">No Progress Bar</button>
-            <button class="demo-btn" id="no-close">No Close Button</button>
-            <button class="demo-btn" id="pause-disabled">No Pause on Hover</button>
-        </div>
-    </div>
-
-    <div class="section">
-        <h2>Themes & Styling</h2>
-        <div class="button-grid">
-            <button class="demo-btn" id="custom-theme">Custom Theme</button>
-            <button class="demo-btn" id="gradient-toast">Gradient Background</button>
-            <button class="demo-btn" id="minimal-toast">Minimal Style</button>
-            <button class="demo-btn" id="custom-progress">Custom Progress</button>
-        </div>
-    </div>
 
 
 </body>
