@@ -1,12 +1,11 @@
 # JS Toast Notifier
 
-A lightweight toast notification package with anchor support, droplet-style connectors, and pause-on-hover functionality.
+A lightweight toast notification package with anchor support, and pause-on-hover functionality.
 
 ## Features
 
 - 📍 Flexible positioning (top, bottom, left, right)
 - 📚 Automatic stacking of multiple notifications
-- 🔗 Anchor element support with droplet-style connectors
 - 🎨 Customizable themes and timeouts
 - ⏸️ Pause on hover functionality
 - ✨ Smooth animations with progress bar
@@ -24,6 +23,9 @@ npm install js-toast-notifier
 
 ```javascript
 import ToastNotifier from 'js-toast-notifier';
+
+// styling
+import "js-toast-notifier/dist/toast.css"
 
 // Initialize with default options
 const toast = new ToastNotifier();
@@ -55,6 +57,7 @@ const toast = new ToastNotifier({
   progressHeight: '4px',    // Progress bar height
   progressColor: '#fff',    // Progress bar color
   progressBackground: 'rgba(255, 255, 255, 0.2)' // Progress background
+  customContainerClass: 'class1 class2' // Add custom classes on container
 });
 ```
 

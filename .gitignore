@@ -1,2 +1,4 @@
 node_modules
 # demo
+dist/toast.css
+rollup.config.js
