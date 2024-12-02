@@ -2,6 +2,8 @@
 
 A lightweight toast notification package with anchor support, and pause-on-hover functionality.
 
+Latest document: https://pandeyamit4.github.io/js-toast-notifier/
+
 ## Features
 
 - 📍 Flexible positioning (top, bottom, left, right)
