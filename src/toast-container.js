@@ -1,5 +1,6 @@
-export function getOrCreateContainer(position = "top-right") {
-	const containerClass = "droplet-toast-container"
+export function getOrCreateContainer(position = "top-right", customContainerClass = "") {
+	let containerClass = "droplet-toast-container"
+	let allClasses = `${containerClass} ${customContainerClass}`.trim()
 
 	// Function to detect if the device is mobile (based on viewport width or user-agent)
 	const isMobile = () => {
@@ -14,15 +15,20 @@ export function getOrCreateContainer(position = "top-right") {
 		position = position.includes("top") ? "top-center" : "bottom-center"
 	}
 
-	// Query for a container with the specific position
+	// Query for a container with the specific position and custom class
 	let container = document.querySelector(`.${containerClass}[data-position="${position}"]`)
 
 	if (!container) {
 		// If not found, create a new one
 		container = document.createElement("div")
-		container.className = containerClass
+		container.className = allClasses
 		container.setAttribute("data-position", position)
 		document.body.appendChild(container)
+	} else {
+		// Add missing custom class if not already present
+		if (!container.classList.contains(customContainerClass)) {
+			container.className = allClasses
+		}
 	}
 
 	return container

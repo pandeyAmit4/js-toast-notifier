@@ -109,6 +109,7 @@ function createProgressBar(options) {
 	const progress = document.createElement("div")
 	progress.className = "toast-progress"
 
+	// Set custom styles if provided
 	if (options.progressHeight) {
 		progress.style.setProperty("--progress-height", options.progressHeight)
 	}
@@ -123,6 +124,7 @@ function createProgressBar(options) {
 
 	const bar = document.createElement("div")
 	bar.className = "toast-progress-bar"
+	progress.appendChild(bar)
 
 	// Initialize progress state
 	let startTime = null
@@ -133,7 +135,7 @@ function createProgressBar(options) {
 	// Function to update progress bar position
 	const updateProgress = (isPaused = false) => {
 		if (isPaused && startTime !== null) {
-			// Store current progress when pausing
+			// Pause progress
 			const elapsed = Date.now() - startTime
 			currentScale = Math.max(0, Math.min(1, elapsed / options.timeout))
 			pausedAt = elapsed
@@ -164,6 +166,10 @@ function createProgressBar(options) {
 				// Starting fresh
 				startTime = Date.now()
 				bar.style.transition = `transform ${options.timeout}ms linear`
+
+				// Ensure the browser paints the initial state before transitioning
+				bar.style.transform = `scaleX(0)`
+				progress.offsetWidth // Force reflow
 				requestAnimationFrame(() => {
 					bar.style.transform = "scaleX(1)"
 				})
@@ -185,12 +191,10 @@ function createProgressBar(options) {
 		}
 	}
 
-	progress.appendChild(bar)
-
-	// Start the progress bar after a frame
-	requestAnimationFrame(() => {
+	// Start the progress bar after ensuring it's in the DOM
+	setTimeout(() => {
 		updateProgress(false)
-	})
+	}, 0)
 
 	return { progressBar: progress, updateProgress }
 }

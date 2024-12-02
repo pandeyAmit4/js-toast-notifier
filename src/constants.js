@@ -14,6 +14,19 @@ export const notificationTypes = {
 	ERROR: "error",
 	INFO: "info",
 	WARNING: "warning",
+	NEUTRAL: "neutral",
+	DEFAULT: "default",
+	SUCCESS_LIGHT: "successLight",
+	ERROR_LIGHT: "errorLight",
+	INFO_LIGHT: "infoLight",
+	WARNING_LIGHT: "warningLight",
+	HIGH_CONTRAST: "highContrast",
+	POSITIVE: "positive",
+	NEGATIVE: "negative",
+	ACCENT_BLUE: "accentBlue",
+	ACCENT_PINK: "accentPink",
+	ACCENT_PURPLE: "accentPurple",
+	ACCENT_TEAL: "accentTeal",
 }
 
 export const defaultIcons = {

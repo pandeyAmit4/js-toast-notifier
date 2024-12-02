@@ -57,6 +57,7 @@ const toast = new ToastNotifier({
   progressHeight: '4px',    // Progress bar height
   progressColor: '#fff',    // Progress bar color
   progressBackground: 'rgba(255, 255, 255, 0.2)' // Progress background
+  customContainerClass: 'class1 class2' // Add custom classes on container
 });
 ```
 

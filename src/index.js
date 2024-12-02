@@ -4,9 +4,6 @@ import { positions, notificationTypes } from "./constants";
 import { calculatePosition } from "./positioning";
 import "./styles/toast.scss"
 
-// Inject styles when the module is loaded
-// injectStyles();
-
 class ToastNotifier {
   constructor(options) {
     if (typeof window === 'undefined') {
@@ -20,9 +17,7 @@ class ToastNotifier {
       showCloseButton: true,
       pauseOnHover: true
     }, options || {});
-    this.container = getOrCreateContainer(this.options.position)
-    // updateContainerPosition(this.container, this.options.position);
-
+    this.container = getOrCreateContainer(this.options.position, this.options.customContainerClass)
     this.handleKeyDown = this.handleKeyDown.bind(this);
     document.addEventListener("keydown", this.handleKeyDown);
   }
@@ -55,8 +50,7 @@ class ToastNotifier {
 
       document.body.appendChild(toast);
     } else {
-    //   updateContainerPosition(this.container, toastOptions.position);
-	  this.container = getOrCreateContainer(toastOptions.position)
+  	this.container = getOrCreateContainer(toastOptions.position)
       this.container.appendChild(toast);
     }
 
@@ -71,25 +65,29 @@ class ToastNotifier {
       closeButton.addEventListener("click", this.hide.bind(this, toast));
     }
 
-    // Use setTimeout for IE11 compatibility instead of requestAnimationFrame
-    setTimeout(function() {
+    // Ensure DOM updates before animations
+    setTimeout(() => {
       toast.classList.add("toast-show");
-    }, 0);
+        // Start the progress bar after ensuring toast is visible
+        if (toast._updateProgress) {
+            toast._updateProgress(false);
+        }
+    }, 10); // Delay slightly increased to ensure DOM is painted
 
     if (toastOptions.timeout) {
-      var timeLeft = toastOptions.timeout;
-      var startTime;
-      var timeoutId;
+        let timeLeft = toastOptions.timeout;
+        let startTime;
+        let timeoutId;
 
-      var startTimer = function() {
+        const startTimer = function () {
         startTime = Date.now();
-        timeoutId = setTimeout(this.hide.bind(this, toast), timeLeft);
-        if (toast._updateProgress) {
-          toast._updateProgress(false);
-        }
-      }.bind(this);
+	    timeoutId = setTimeout(this.hide.bind(this, toast), timeLeft);
+            if (toast._updateProgress) {
+              toast._updateProgress(false);
+            }
+        }.bind(this);
 
-      var pauseTimer = function() {
+    const pauseTimer = function () {
         clearTimeout(timeoutId);
         timeLeft -= Date.now() - startTime;
         if (toast._updateProgress) {
