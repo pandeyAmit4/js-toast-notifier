@@ -2,7 +2,7 @@ import { renameSync, rmSync, existsSync } from "fs"
 import { join } from "path"
 
 const distPath = join(process.cwd(), "dist")
-const srcPath = join(process.cwd(), "srcm")
+const srcPath = join(process.cwd(), "lib")
 
 try {
 	if (existsSync(distPath)) {
