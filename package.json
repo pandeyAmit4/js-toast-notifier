@@ -1,14 +1,25 @@
 {
-	"name": "js-toast-notifier",
-	"version": "1.0.4",
+	"name": "ToastNotifier",
+	"version": "1.0.5",
 	"description": "ToastfierJS is a lightweight JavaScript library for customizable toast notifications, supporting dynamic positioning, themes, and notification types with icons—ideal for clean, dependency-free alerts in any web app.",
+	"type": "module",
 	"main": "dist/index.js",
 	"module": "dist/index.esm.js",
+	"types": "./dist/index.d.ts",
+	"browser": "dist/index.umd.js",
 	"unpkg": "dist/index.umd.js",
 	"scripts": {
-		"build": "microbundle",
-		"dev": "microbundle watch",
+		"prebuild": "sass src/styles:dist --no-source-map && node copy-scss.js",
+		"build": "microbundle --config --no-sourcemap",
+		"dev": "microbundle watch  --config --no-sourcemap",
 		"test": "vitest"
+	},
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.esm.js",
+			"require": "./dist/index.cjs"
+		}
 	},
 	"keywords": [
 		"toast",
@@ -47,9 +58,11 @@
 		"LICENSE"
 	],
 	"devDependencies": {
+		"core-js": "^3.39.0",
 		"cssnano": "^7.0.6",
-		"postcss-import": "^16.1.0",
 		"microbundle": "^0.15.1",
+		"postcss-import": "^16.1.0",
+		"sass": "^1.68.0",
 		"vitest": "^0.34.6"
 	},
 	"browserslist": [

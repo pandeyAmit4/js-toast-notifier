@@ -6,9 +6,9 @@
     <title>JS Toast Notifier Documentation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
     <!-- <link rel="stylesheet" href="../dist/toast.css"> -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/js-toast-notifier@1.0.3/dist/toast.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/js-toast-notifier@1.0.4/dist/index.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/js-toast-notifier@1.0.3/dist/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-toast-notifier@1.0.4/dist/index.umd.js"></script>
     <!-- and it's easy to individually load additional languages -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
 
@@ -476,7 +476,7 @@ const toast = new ToastNotifier({
 </body>
 <script type="module">
         // import {ToastNotifier} from 'js-toast-notifier';
-        import jsToastNotifier from 'https://cdn.jsdelivr.net/npm/js-toast-notifier@1.0.3/+esm'
+        let ToastNotifier = jsToastNotifier.ToastNotifier
         console.log(ToastNotifier)
         // Initialize with default options
         const toast = new ToastNotifier({

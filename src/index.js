@@ -2,7 +2,7 @@ import { getOrCreateContainer } from "./toast-container"
 import { createToast } from "./toast";
 import { positions, notificationTypes } from "./constants";
 import { calculatePosition } from "./positioning";
-import "./styles/toast.css"
+import "./styles/toast.scss"
 
 // Inject styles when the module is loaded
 // injectStyles();

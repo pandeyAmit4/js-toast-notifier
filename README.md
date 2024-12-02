@@ -1,12 +1,11 @@
 # JS Toast Notifier
 
-A lightweight toast notification package with anchor support, droplet-style connectors, and pause-on-hover functionality.
+A lightweight toast notification package with anchor support, and pause-on-hover functionality.
 
 ## Features
 
 - 📍 Flexible positioning (top, bottom, left, right)
 - 📚 Automatic stacking of multiple notifications
-- 🔗 Anchor element support with droplet-style connectors
 - 🎨 Customizable themes and timeouts
 - ⏸️ Pause on hover functionality
 - ✨ Smooth animations with progress bar
