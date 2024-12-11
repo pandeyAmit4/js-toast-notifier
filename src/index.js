@@ -135,6 +135,7 @@ class ToastNotifier {
       detail: { toast }
     });
     toast.dispatchEvent(closedEvent);
+    document.dispatchEvent(closedEvent);
     // Use standard event listener for better compatibility
     var handleTransitionEnd = function() {
       if (toast.parentNode) {

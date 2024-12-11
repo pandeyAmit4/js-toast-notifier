@@ -466,7 +466,25 @@ const toast = new ToastNotifier({
   customContainerClass: 'class1 class2' // Add custom classes on container
 });
 </code></pre>
+  <h3>toastOpened and Toast Closed Event</h3>
+  <p>listen to these events to handle thing before or after toast</p>
+  <pre>
+  <code class="javascript">
+    let newtoast = toast.show('notification has been triggered')
+    document.addEventListener('toastClosed', ()=>{
+        console.log('closed that shit')
+    })
+    document.addEventListener('toastClosed', ()=>{
+        console.log('closed that shit')
+    })
 
+    //OR
+
+    newtoast.addEventListener('toastClosed', ()=>{
+        console.log('closed that shit')
+    })
+  </code>
+  </pre>
     <h3>Individual Toast Configuration</h3>
     <p>Each toast can override the global configuration:</p>
     <pre><code class="javascript">
