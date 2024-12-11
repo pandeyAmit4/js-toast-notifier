@@ -9,6 +9,7 @@
   margin: 8px;
   max-width: 400px;
   min-width: 280px;
+  min-height: 20px;
   opacity: 0;
   overflow: visible;
   padding: 16px;
@@ -16,7 +17,7 @@
   overflow: hidden;
   transform: translateY(10px);
   transition: all 0.3s ease;
-  z-index: 1000;
+  z-index: 10000;
 
   &:focus {
     outline: 3px solid #2563eb;
@@ -41,7 +42,7 @@
 
   &-icon {
     flex-shrink: 0;
-
+	line-height: 10px;
     svg {
       height: 24px;
       width: 24px;

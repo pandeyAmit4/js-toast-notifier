@@ -1,13 +1,12 @@
 export function getOrCreateContainer(position = "top-right", customContainerClass = "") {
-	let containerClass = "droplet-toast-container"
-	let allClasses = `${containerClass} ${customContainerClass}`.trim()
+	const containerClass = "droplet-toast-container"
 
-	// Function to detect if the device is mobile (based on viewport width or user-agent)
+	// Detect if the device is mobile
 	const isMobile = () => {
-		const mobileViewportWidth = window.innerWidth <= 768 // Check screen width for mobile devices
-		const isMobileDevice = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) // Check user-agent for mobile devices
+		const mobileViewportWidth = window.innerWidth <= 768
+		const isMobileDevice = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
 
-		return mobileViewportWidth || isMobileDevice // Return true if either check is true
+		return mobileViewportWidth || isMobileDevice
 	}
 
 	// If it's a mobile device, override position to top-center or bottom-center
@@ -15,20 +14,21 @@ export function getOrCreateContainer(position = "top-right", customContainerClas
 		position = position.includes("top") ? "top-center" : "bottom-center"
 	}
 
-	// Query for a container with the specific position and custom class
+	// Search for an existing container
 	let container = document.querySelector(`.${containerClass}[data-position="${position}"]`)
 
 	if (!container) {
-		// If not found, create a new one
+		// If no container exists, create a new one
 		container = document.createElement("div")
-		container.className = allClasses
+		container.className = `${containerClass} ${customContainerClass}`.trim()
 		container.setAttribute("data-position", position)
 		document.body.appendChild(container)
 	} else {
-		// Add missing custom class if not already present
-		if (!container.classList.contains(customContainerClass)) {
-			container.className = allClasses
-		}
+		// Merge the new custom class into the existing container classes
+		const existingClasses = container.className.split(" ")
+		const newClasses = customContainerClass.split(" ").filter((cls) => cls) // Remove empty strings
+		const mergedClasses = Array.from(new Set([...existingClasses, ...newClasses])) // Avoid duplicates
+		container.className = mergedClasses.join(" ") // Convert array to a space-separated string
 	}
 
 	return container
