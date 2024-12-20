@@ -50,9 +50,15 @@ class ToastNotifier {
 
       document.body.appendChild(toast);
     } else {
-  	this.container = getOrCreateContainer(toastOptions.position)
+      this.container = getOrCreateContainer(toastOptions.position)
       this.container.appendChild(toast);
     }
+
+    // Dispatch toastOpened event when the toast is added to the DOM
+    const openedEvent = new CustomEvent('toastOpened', {
+      detail: { toast, message, options: toastOptions }
+    });
+    document.dispatchEvent(openedEvent);
 
     toast.addEventListener("keydown", function(e) {
       if (e.key === "Enter" || e.key === " ") {
@@ -68,10 +74,10 @@ class ToastNotifier {
     // Ensure DOM updates before animations
     setTimeout(() => {
       toast.classList.add("toast-show");
-        // Start the progress bar after ensuring toast is visible
-        if (toast._updateProgress) {
-            toast._updateProgress(false);
-        }
+      // Start the progress bar after ensuring toast is visible
+      if (toast._updateProgress) {
+        toast._updateProgress(false);
+      }
     }, 10); // Delay slightly increased to ensure DOM is painted
 
     if (toastOptions.timeout) {
@@ -80,27 +86,27 @@ class ToastNotifier {
         let timeoutId;
 
         const startTimer = function () {
-        startTime = Date.now();
-	    timeoutId = setTimeout(this.hide.bind(this, toast), timeLeft);
-            if (toast._updateProgress) {
-              toast._updateProgress(false);
-            }
+          startTime = Date.now();
+          timeoutId = setTimeout(this.hide.bind(this, toast), timeLeft);
+          if (toast._updateProgress) {
+            toast._updateProgress(false);
+          }
         }.bind(this);
 
-    const pauseTimer = function () {
-        clearTimeout(timeoutId);
-        timeLeft -= Date.now() - startTime;
-        if (toast._updateProgress) {
-          toast._updateProgress(true);
+        const pauseTimer = function () {
+          clearTimeout(timeoutId);
+          timeLeft -= Date.now() - startTime;
+          if (toast._updateProgress) {
+            toast._updateProgress(true);
+          }
+        };
+
+        if (toastOptions.pauseOnHover) {
+          toast.addEventListener("mouseenter", pauseTimer);
+          toast.addEventListener("mouseleave", startTimer);
         }
-      };
 
-      if (toastOptions.pauseOnHover) {
-        toast.addEventListener("mouseenter", pauseTimer);
-        toast.addEventListener("mouseleave", startTimer);
-      }
-
-      startTimer();
+        startTimer();
     }
 
     return toast;
@@ -124,7 +130,12 @@ class ToastNotifier {
 
   hide(toast) {
     toast.classList.remove("toast-show");
-    
+    // Dispatch toastClosed event when the toast is removed
+    const closedEvent = new CustomEvent('toastClosed', {
+      detail: { toast }
+    });
+    toast.dispatchEvent(closedEvent);
+    document.dispatchEvent(closedEvent);
     // Use standard event listener for better compatibility
     var handleTransitionEnd = function() {
       if (toast.parentNode) {
@@ -132,7 +143,6 @@ class ToastNotifier {
       }
       toast.removeEventListener("transitionend", handleTransitionEnd);
     };
-    
     toast.addEventListener("transitionend", handleTransitionEnd);
   }
 

@@ -71,7 +71,7 @@ function createContent(message, options, theme) {
 	}
 
 	const messageEl = document.createElement("span")
-	messageEl.textContent = message
+	messageEl.innerHTML = message
 	wrapper.appendChild(messageEl)
 
 	return wrapper
