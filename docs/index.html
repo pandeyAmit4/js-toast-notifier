@@ -7,11 +7,11 @@
   <title>JS Toast Notifier Documentation</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
   <!-- <link rel="stylesheet" href="../dist/toast.css"> -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/js-toast-notifier@1.0.6/dist/index.css">
-  <!-- <link rel="stylesheet" href="..//dist/index.css"> -->
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/js-toast-notifier@1.0.6/dist/index.css"> -->
+  <link rel="stylesheet" href="..//dist/index.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/js-toast-notifier@1.0.6/dist/index.umd.js"></script>
-  <!-- <script src="../dist/index.umd.js"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/js-toast-notifier@1.0.6/dist/index.umd.js"></script> -->
+  <script src="../dist/index.umd.js"></script>
   <!-- and it's easy to individually load additional languages -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
 
@@ -382,7 +382,7 @@
     <div class="section">
       <h2>Advanced Features</h2>
       <div class="button-grid">
-        <!-- <button class="demo-btn" id="anchor-toast">Anchored Toast</button> -->
+        <button class="demo-btn" id="anchor-toast">Anchored Toast</button>
         <button class="demo-btn" id="infinite-toast">Infinite Toast</button>
         <button class="demo-btn" id="no-progress">No Progress Bar</button>
         <button class="demo-btn" id="no-close">No Close Button</button>
@@ -743,14 +743,14 @@ const toast = new ToastNotifier({
     });
   });
 
-  // Advanced Features
-  // document.getElementById('anchor-toast').addEventListener('click', (e) => {
-  //     toast.show('This toast is anchored to the button!', {
-  //         anchor: e.target,
-  //         position: 'top',
-  //         timeout: 5000
-  //     });
-  // });
+ // Advanced Features
+  document.getElementById('anchor-toast').addEventListener('click', (e) => {
+      toast.show('This toast is anchored to the button!', {
+          anchor: e.target,
+          position: 'top',
+          timeout: 5000
+      });
+  });
 
   document.getElementById('infinite-toast').addEventListener('click', () => {
     toast.info('This toast will not auto-close', {

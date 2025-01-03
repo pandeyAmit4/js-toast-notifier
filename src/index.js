@@ -20,6 +20,70 @@ class ToastNotifier {
     this.container = getOrCreateContainer(this.options.position, this.options.customContainerClass)
     this.handleKeyDown = this.handleKeyDown.bind(this);
     document.addEventListener("keydown", this.handleKeyDown);
+
+    // Add global mousemove handler to activate frozen progress bars
+    document.addEventListener('mousemove', () => {
+      const toasts = this.container.querySelectorAll('.toast');
+      toasts.forEach(toast => {
+        if (toast._updateProgress && !toast.matches(':hover')) {
+          requestAnimationFrame(() => {
+            toast._updateProgress(false);
+          });
+        }
+      });
+    }, { once: true }); // Only need to trigger once to unfreeze
+
+    // Add one-time click handler to activate frozen toasts
+    document.addEventListener('click', () => {
+      const toasts = document.querySelectorAll('.toast');
+      toasts.forEach(toast => {
+        if (toast._updateProgress) {
+          toast._updateProgress(false);
+        }
+      });
+    }, { once: true });
+
+    // Activate all toasts immediately and listen for future ones
+    const activateAllToasts = () => {
+      document.querySelectorAll('.toast').forEach(toast => {
+        if (toast._updateProgress) {
+          requestAnimationFrame(() => {
+            toast._updateProgress(false);
+          });
+        }
+      });
+    };
+
+    // Run immediately
+    activateAllToasts();
+
+    // Also run on any user interaction
+    ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'].forEach(event => {
+      document.addEventListener(event, activateAllToasts, { once: true });
+    });
+
+    // Remove scroll-causing focus trick and replace with a simpler activation
+    document.body.click();
+    window.focus();
+
+    // Alternative activation without scroll side effect
+    requestAnimationFrame(() => {
+      document.dispatchEvent(new Event('mousemove'));
+    });
+
+    // Create a hidden input element that won't affect layout or cause scroll
+    const dummyInput = document.createElement('input');
+    Object.assign(dummyInput.style, {
+      position: 'fixed',
+      top: '0',
+      opacity: '0',
+      height: '0',
+      pointerEvents: 'none',
+      zIndex: '-1'
+    });
+    document.body.appendChild(dummyInput);
+    dummyInput.focus();
+    dummyInput.remove();
   }
 
   show(message, options) {
@@ -71,14 +135,31 @@ class ToastNotifier {
       closeButton.addEventListener("click", this.hide.bind(this, toast));
     }
 
-    // Ensure DOM updates before animations
-    setTimeout(() => {
+    // Add toast to DOM first
+    if (toastOptions.anchor) {
+      document.body.appendChild(toast);
+    } else {
+      this.container = getOrCreateContainer(toastOptions.position);
+      this.container.appendChild(toast);
+    }
+
+    // Force a reflow before any animations
+    void toast.offsetHeight;
+
+    // Simplified animation sequence
+    requestAnimationFrame(() => {
       toast.classList.add("toast-show");
-      // Start the progress bar after ensuring toast is visible
-      if (toast._updateProgress) {
-        toast._updateProgress(false);
+      // Force document active state before starting progress
+      window.focus();
+      document.hasFocus() || document.body.click();
+      
+      if (toast._updateProgress && toastOptions.timeout) {
+        // Ensure the toast is visible before starting progress
+        requestAnimationFrame(() => {
+          toast._updateProgress(false);
+        });
       }
-    }, 10); // Delay slightly increased to ensure DOM is painted
+    });
 
     if (toastOptions.timeout) {
         let timeLeft = toastOptions.timeout;
@@ -88,7 +169,8 @@ class ToastNotifier {
         const startTimer = function () {
           startTime = Date.now();
           timeoutId = setTimeout(this.hide.bind(this, toast), timeLeft);
-          if (toast._updateProgress) {
+          // Only update progress if timer is actually running
+          if (toast._updateProgress && timeLeft > 0) {
             toast._updateProgress(false);
           }
         }.bind(this);
@@ -102,12 +184,28 @@ class ToastNotifier {
         };
 
         if (toastOptions.pauseOnHover) {
-          toast.addEventListener("mouseenter", pauseTimer);
-          toast.addEventListener("mouseleave", startTimer);
+          // Prevent click from resuming progress while hovering
+          toast.addEventListener("mouseenter", () => {
+            pauseTimer();
+            toast.addEventListener("click", e => e.stopPropagation(), { capture: true });
+          });
+          
+          toast.addEventListener("mouseleave", () => {
+            startTimer();
+            toast.removeEventListener("click", e => e.stopPropagation(), { capture: true });
+          });
         }
 
         startTimer();
     }
+
+    // Remove redundant animation and activation code
+    requestAnimationFrame(() => {
+      toast.classList.add("toast-show");
+      if (toast._updateProgress && toastOptions.timeout) {
+        toast._updateProgress(false);
+      }
+    });
 
     return toast;
   }
