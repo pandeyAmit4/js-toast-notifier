@@ -11,7 +11,6 @@
   min-width: 280px;
   min-height: 20px;
   opacity: 0;
-  overflow: visible;
   padding: 16px;
   position: fixed;
   overflow: hidden;
@@ -93,47 +92,54 @@
 .toast-anchored {
   margin: 0;
   position: absolute;
+  overflow: auto;
 }
 .toast-droplet {
-  height: 12px;
-  transform: rotate(45deg);
-  transition: left 0.3s ease;
+  position: absolute;
   width: 12px;
+  height: 12px;
+  background: inherit;
+  transform: rotate(45deg);
   z-index: -1;
 }
 .toast-droplet:after {
-  background-color: inherit;
-  bottom: -999px;
   content: "";
-  left: 50%;
   position: absolute;
-  top: 100%;
-  transform: translateX(-50%);
+  background-color: inherit;
   width: 2px;
+  opacity: 0.5;
+  transition: height 0.2s ease;
+  height: var(--connector-height, 0);
 }
 .toast-droplet[data-point=top] {
-  left: var(--droplet-left, calc(50% - 6px));
   top: -6px;
+  left: var(--droplet-left, 50%);
+  transform: translateX(-50%) rotate(45deg);
 }
 .toast-droplet[data-point=top]:after {
-  display: none;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .toast-droplet[data-point=bottom] {
   bottom: -6px;
-  left: var(--droplet-left, calc(50% - 6px));
+  left: var(--droplet-left, 50%);
+  transform: translateX(-50%) rotate(45deg);
 }
 .toast-droplet[data-point=bottom]:after {
   bottom: 100%;
-  height: var(--droplet-connector-height, 0);
-  top: auto;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .toast-droplet[data-point=left] {
   left: -6px;
-  top: calc(50% - 6px);
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
 }
 .toast-droplet[data-point=right] {
   right: -6px;
-  top: calc(50% - 6px);
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
 }
 
 .droplet-toast-container {

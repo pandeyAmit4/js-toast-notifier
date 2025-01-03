@@ -84,6 +84,8 @@ class ToastNotifier {
     document.body.appendChild(dummyInput);
     dummyInput.focus();
     dummyInput.remove();
+
+    this.anchoredToasts = new Map(); // Track anchored toasts
   }
 
   show(message, options) {
@@ -100,19 +102,50 @@ class ToastNotifier {
     };
 
     if (toastOptions.anchor) {
-      const coords = calculatePosition(toast, toastOptions.anchor, toastOptions.position, viewport);
-      Object.assign(toast.style, {
-        position: "absolute",
-        top: coords.top + "px",
-        left: coords.left + "px",
-        zIndex: "1001"
+      // First append to get proper dimensions
+      document.body.appendChild(toast);
+      
+      // Update position function
+      const updatePosition = () => {
+        const coords = calculatePosition(toast, toastOptions.anchor, toastOptions.position, viewport);
+        Object.assign(toast.style, {
+          position: "fixed",
+          top: `${coords.top}px`,
+          left: `${coords.left}px`,
+          margin: '0',
+          zIndex: "1001",
+          overflow: 'auto' // Set overflow to auto for anchored toasts
+        });
+
+        // Update droplet and connector
+        const droplet = toast.querySelector('.toast-droplet');
+        if (droplet) {
+          droplet.setAttribute('data-point', coords.dropletPoint);
+          if (coords.dropletOffset) {
+            toast.style.setProperty('--droplet-left', `calc(50% + ${coords.dropletOffset}px)`);
+          }
+          // Set the connector height
+          toast.style.setProperty('--connector-height', `${coords.connectorHeight}px`);
+        }
+      };
+
+      // Initial position
+      updatePosition();
+
+      // Track this anchored toast
+      this.anchoredToasts.set(toast, {
+        anchor: toastOptions.anchor,
+        position: toastOptions.position,
+        updatePosition
       });
 
-      if (coords.dropletOffset) {
-        toast.style.setProperty("--droplet-left", coords.dropletOffset + "px");
+      // Add scroll listener if not already added
+      if (!this._scrollListener) {
+        this._scrollListener = () => {
+          this.anchoredToasts.forEach(({updatePosition}) => updatePosition());
+        };
+        window.addEventListener('scroll', this._scrollListener, { passive: true });
       }
-
-      document.body.appendChild(toast);
     } else {
       this.container = getOrCreateContainer(toastOptions.position)
       this.container.appendChild(toast);
@@ -169,8 +202,7 @@ class ToastNotifier {
         const startTimer = function () {
           startTime = Date.now();
           timeoutId = setTimeout(this.hide.bind(this, toast), timeLeft);
-          // Only update progress if timer is actually running
-          if (toast._updateProgress && timeLeft > 0) {
+          if (toast._updateProgress) {
             toast._updateProgress(false);
           }
         }.bind(this);
@@ -184,28 +216,41 @@ class ToastNotifier {
         };
 
         if (toastOptions.pauseOnHover) {
-          // Prevent click from resuming progress while hovering
-          toast.addEventListener("mouseenter", () => {
-            pauseTimer();
-            toast.addEventListener("click", e => e.stopPropagation(), { capture: true });
-          });
-          
-          toast.addEventListener("mouseleave", () => {
-            startTimer();
-            toast.removeEventListener("click", e => e.stopPropagation(), { capture: true });
-          });
+          // Simple event listeners that worked
+          toast.addEventListener("mouseenter", pauseTimer);
+          toast.addEventListener("mouseleave", startTimer);
         }
 
         startTimer();
     }
 
-    // Remove redundant animation and activation code
-    requestAnimationFrame(() => {
-      toast.classList.add("toast-show");
-      if (toast._updateProgress && toastOptions.timeout) {
+    // Add these activation triggers right after toast is added to DOM
+    const activateProgress = () => {
+      if (toast._updateProgress && document.contains(toast)) {
         toast._updateProgress(false);
       }
+    };
+
+    // Trigger on any user interaction
+    const interactionEvents = ['mousedown', 'keydown', 'touchstart', 'scroll'];
+    const cleanup = () => {
+      interactionEvents.forEach(event => {
+        window.removeEventListener(event, activateProgress);
+      });
+    };
+
+    interactionEvents.forEach(event => {
+      window.addEventListener(event, activateProgress, { once: true });
     });
+
+    // Start initial animation
+    requestAnimationFrame(() => {
+      toast.classList.add("toast-show");
+      activateProgress();
+    });
+
+    // Clean up event listeners when toast is removed
+    toast.addEventListener('toastClosed', cleanup);
 
     return toast;
   }
@@ -242,6 +287,15 @@ class ToastNotifier {
       toast.removeEventListener("transitionend", handleTransitionEnd);
     };
     toast.addEventListener("transitionend", handleTransitionEnd);
+
+    // Remove from tracked anchored toasts
+    this.anchoredToasts.delete(toast);
+    
+    // Remove scroll listener if no more anchored toasts
+    if (this.anchoredToasts.size === 0 && this._scrollListener) {
+      window.removeEventListener('scroll', this._scrollListener);
+      this._scrollListener = null;
+    }
   }
 
   handleKeyDown(e) {
@@ -257,6 +311,11 @@ class ToastNotifier {
     document.removeEventListener("keydown", this.handleKeyDown);
     if (this.container && this.container.parentNode) {
       this.container.parentNode.removeChild(this.container);
+    }
+
+    // Clean up scroll listener
+    if (this._scrollListener) {
+      window.removeEventListener('scroll', this._scrollListener);
     }
   }
 }

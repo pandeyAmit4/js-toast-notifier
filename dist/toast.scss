@@ -11,7 +11,6 @@
   min-width: 280px;
   min-height: 20px;
   opacity: 0;
-  overflow: visible;
   padding: 16px;
   position: fixed;
   overflow: hidden;
@@ -105,54 +104,61 @@
   &-anchored {
     margin: 0;
     position: absolute;
+    overflow: auto; // Set overflow to auto for anchored toasts
   }
 
   &-droplet {
-    height: 12px;
-    transform: rotate(45deg);
-    transition: left 0.3s ease;
+    position: absolute;
     width: 12px;
+    height: 12px;
+    background: inherit;
+    transform: rotate(45deg);
     z-index: -1;
 
     &:after {
-      background-color: inherit;
-      bottom: -999px;
-      content: "";
-      left: 50%;
+      content: '';
       position: absolute;
-      top: 100%;
-      transform: translateX(-50%);
+      background-color: inherit;
       width: 2px;
+      opacity: 0.5;
+      transition: height 0.2s ease;
+      height: var(--connector-height, 0); // Use connector height directly
     }
 
     &[data-point="top"] {
-      left: var(--droplet-left, calc(50% - 6px));
       top: -6px;
-
+      left: var(--droplet-left, 50%);
+      transform: translateX(-50%) rotate(45deg);
+      
       &:after {
-        display: none;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
       }
     }
 
     &[data-point="bottom"] {
       bottom: -6px;
-      left: var(--droplet-left, calc(50% - 6px));
-
+      left: var(--droplet-left, 50%);
+      transform: translateX(-50%) rotate(45deg);
+      
       &:after {
         bottom: 100%;
-        height: var(--droplet-connector-height, 0);
-        top: auto;
+        left: 50%;
+        transform: translateX(-50%);
       }
     }
 
     &[data-point="left"] {
       left: -6px;
-      top: calc(50% - 6px);
+      top: 50%;
+      transform: translateY(-50%) rotate(45deg);
     }
 
     &[data-point="right"] {
       right: -6px;
-      top: calc(50% - 6px);
+      top: 50%;
+      transform: translateY(-50%) rotate(45deg);
     }
   }
 }
