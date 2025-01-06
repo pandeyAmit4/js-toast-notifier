@@ -108,7 +108,11 @@ class ToastNotifier {
       
       // Update position function
       const updatePosition = () => {
-        const coords = calculatePosition(toast, toastOptions.anchor, toastOptions.position, viewport, toastOptions.preferredAnchorPosition);
+        const updatedViewport = {
+          width: window.innerWidth || document.documentElement.clientWidth,
+          height: window.innerHeight || document.documentElement.clientHeight
+        };
+        const coords = calculatePosition(toast, toastOptions.anchor, toastOptions.position, updatedViewport, toastOptions.preferredAnchorPosition);
         Object.assign(toast.style, {
           position: "fixed",
           top: `${coords.top}px`,
@@ -142,6 +146,14 @@ class ToastNotifier {
           this.anchoredToasts.forEach(({updatePosition}) => updatePosition());
         };
         window.addEventListener('scroll', this._scrollListener, { passive: true });
+      }
+
+      // Add resize listener if not already added
+      if (!this._resizeListener) {
+        this._resizeListener = () => {
+          this.anchoredToasts.forEach(({updatePosition}) => updatePosition());
+        };
+        window.addEventListener('resize', this._resizeListener, { passive: true });
       }
     } else {
       this.container = getOrCreateContainer(toastOptions.position)
@@ -288,10 +300,16 @@ class ToastNotifier {
     // Remove from tracked anchored toasts
     this.anchoredToasts.delete(toast);
     
-    // Remove scroll listener if no more anchored toasts
-    if (this.anchoredToasts.size === 0 && this._scrollListener) {
-      window.removeEventListener('scroll', this._scrollListener);
-      this._scrollListener = null;
+    // Remove scroll & resize listeners if no more anchored toasts
+    if (this.anchoredToasts.size === 0) {
+      if (this._scrollListener) {
+        window.removeEventListener('scroll', this._scrollListener);
+        this._scrollListener = null;
+      }
+      if (this._resizeListener) {
+        window.removeEventListener('resize', this._resizeListener);
+        this._resizeListener = null;
+      }
     }
   }
 
@@ -313,6 +331,9 @@ class ToastNotifier {
     // Clean up scroll listener
     if (this._scrollListener) {
       window.removeEventListener('scroll', this._scrollListener);
+    }
+    if (this._resizeListener) {
+      window.removeEventListener('resize', this._resizeListener);
     }
   }
 }

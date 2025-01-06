@@ -6,6 +6,7 @@ export class ToastNotifier {
     anchoredToasts: Map<any, any>;
     show(message: any, options: any): HTMLDivElement;
     _scrollListener: () => void;
+    _resizeListener: () => void;
     success(message: any, options: any): HTMLDivElement;
     error(message: any, options: any): HTMLDivElement;
     info(message: any, options: any): HTMLDivElement;
