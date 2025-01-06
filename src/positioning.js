@@ -1,25 +1,37 @@
-export function calculatePosition(toast, anchor, position = 'top', viewport) {
-    const anchorRect = anchor.getBoundingClientRect();
+export function calculatePosition(toast, anchor, position, viewport, preferredPosition = 'top') {
+    const anchorRect = typeof anchor === 'function' ? anchor().getBoundingClientRect() : anchor.getBoundingClientRect();
     const toastRect = toast.getBoundingClientRect();
     const gap = 12;
 
+    // Calculate available space above and below anchor
+    const spaceAbove = anchorRect.top;
+    const spaceBelow = viewport.height - anchorRect.bottom;
+
+    // Determine if preferred position is possible
+    const usePreferred = preferredPosition === 'top' ? 
+        spaceAbove >= toastRect.height : 
+        spaceBelow >= toastRect.height;
+
+    // Use preferred position if possible, otherwise use position with most space
+    const shouldPositionTop = usePreferred ? 
+        preferredPosition === 'top' : 
+        spaceAbove > spaceBelow;
+
     // Calculate position relative to viewport
     let coords = {
-        top: anchorRect.top,  // Remove window.scrollY
+        top: shouldPositionTop ? anchorRect.top - toastRect.height - gap : anchorRect.bottom + gap,
         left: anchorRect.left, // Remove window.scrollX
-        dropletPoint: position,
+        dropletPoint: shouldPositionTop ? 'bottom' : 'top',
         dropletOffset: null
     };
 
     // Position calculations
     switch(position) {
         case 'top':
-            coords.top -= (toastRect.height + gap);
             coords.left += (anchorRect.width - toastRect.width) / 2;
             coords.dropletPoint = 'bottom';
             break;
         case 'bottom':
-            coords.top += anchorRect.height + gap;
             coords.left += (anchorRect.width - toastRect.width) / 2;
             coords.dropletPoint = 'top';
             break;

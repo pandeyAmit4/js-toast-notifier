@@ -7,10 +7,10 @@
   <title>JS Toast Notifier Documentation</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
   <!-- <link rel="stylesheet" href="../dist/toast.css"> -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/js-toast-notifier@1.0.6/dist/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/js-toast-notifier@1.0.9/dist/index.css">
   <!-- <link rel="stylesheet" href="..//dist/index.css"> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/js-toast-notifier@1.0.6/dist/index.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-toast-notifier@1.0.9/dist/index.umd.js"></script>
   <!-- <script src="../dist/index.umd.js"></script> -->
   <!-- and it's easy to individually load additional languages -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
@@ -462,8 +462,10 @@ const toast = new ToastNotifier({
   progressHeight: '4px',    // Progress bar height
   progressColor: '#fff',    // Progress bar color
   customClass: 'classname', // Add class on the Toast
+  anchor: document.queryselector('.anchorelement'), // Anchor element
   progressBackground: 'rgba(255, 255, 255, 0.2)', // Progress background
-  customContainerClass: 'class1 class2' // Add custom classes on container
+  customContainerClass: 'class1 class2', // Add custom classes on container
+  preferredAnchorPosition: 'top' // Preferred position for anchored toasts
 });
 </code></pre>
   <h3>toastOpened and Toast Closed Event</h3>
@@ -494,11 +496,10 @@ toast.show('Custom theme!', {
   customClass: 'my-custom-toast'
 });
 
-// Anchored toast with custom position
-toast.show('Anchored to button!', {
+// Anchored toast with preferred bottom position
+toast.show('Anchored below the button!', {
   anchor: document.getElementById('my-button'),
-  position: 'top',
-  timeout: 3000
+  preferredAnchorPosition: 'bottom'
 });
 
 // Toast with custom progress bar
@@ -602,6 +603,13 @@ toast.show('Will not auto-close', { timeout: 0, showProgress: false });
         <td data-label="Default">-</td>
         <td data-label="Possible Values">Any valid CSS class</td>
         <td data-label="Description">Could be used for themes or tracking</td>
+      </tr>
+      <tr>
+        <td data-label="Option">preferredAnchorPosition</td>
+        <td data-label="Type">string</td>
+        <td data-label="Default">'top'</td>
+        <td data-label="Possible Values">'top', 'bottom'</td>
+        <td data-label="Description">Preferred position for anchored toasts</td>
       </tr>
     </table>
 
@@ -747,8 +755,8 @@ const toast = new ToastNotifier({
   document.getElementById('anchor-toast').addEventListener('click', (e) => {
       toast.error('This toast is anchored to the button!', {
           anchor: e.target,
-          position: 'top',
-          timeout: 0
+          timeout: 0,
+          preferredAnchorPosition: 'bottom'
       });
   });
 

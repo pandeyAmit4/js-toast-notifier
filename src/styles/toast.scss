@@ -13,7 +13,7 @@
   opacity: 0;
   padding: 16px;
   position: fixed;
-  overflow: hidden;
+  overflow: visible; // Changed from hidden to visible
   transform: translateY(10px);
   transition: all 0.3s ease;
   z-index: 10000;
@@ -104,7 +104,7 @@
   &-anchored {
     margin: 0;
     position: absolute;
-    overflow: auto; // Set overflow to auto for anchored toasts
+    overflow: visible; // Changed from auto to visible
   }
 
   &-droplet {
@@ -113,7 +113,9 @@
     height: 12px;
     background: inherit;
     transform: rotate(45deg);
-    z-index: -1;
+    // Remove negative z-index
+    z-index: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); // Add shadow to match toast
 
     &:after {
       content: '';
@@ -122,13 +124,15 @@
       width: 2px;
       opacity: 0.5;
       transition: height 0.2s ease;
-      height: var(--connector-height, 0); // Use connector height directly
+      // height: var(--connector-height, 0); // Use connector height directly
     }
 
+    // Improve positioning for each direction
     &[data-point="top"] {
       top: -6px;
       left: var(--droplet-left, 50%);
       transform: translateX(-50%) rotate(45deg);
+      box-shadow: -3px -3px 5px rgba(0, 0, 0, 0.05);
       
       &:after {
         top: 100%;
@@ -141,6 +145,7 @@
       bottom: -6px;
       left: var(--droplet-left, 50%);
       transform: translateX(-50%) rotate(45deg);
+      box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.05);
       
       &:after {
         bottom: 100%;
@@ -153,12 +158,14 @@
       left: -6px;
       top: 50%;
       transform: translateY(-50%) rotate(45deg);
+      box-shadow: -3px 0 5px rgba(0, 0, 0, 0.05);
     }
 
     &[data-point="right"] {
       right: -6px;
       top: 50%;
       transform: translateY(-50%) rotate(45deg);
+      box-shadow: 3px 0 5px rgba(0, 0, 0, 0.05);
     }
   }
 }

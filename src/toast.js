@@ -102,6 +102,8 @@ function createDroplet(theme) {
 	droplet.setAttribute("role", "presentation")
 	droplet.setAttribute("aria-hidden", "true")
 	droplet.style.backgroundColor = theme.backgroundColor
+	// Set initial data-point attribute
+	droplet.setAttribute("data-point", "top") // Default position
 	return droplet
 }
 

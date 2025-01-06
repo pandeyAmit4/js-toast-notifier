@@ -15,7 +15,8 @@ class ToastNotifier {
       timeout: 5000,
       theme: "light",
       showCloseButton: true,
-      pauseOnHover: true
+      pauseOnHover: true,
+      preferredAnchorPosition: 'top' // Add default preferred position
     }, options || {});
     this.container = getOrCreateContainer(this.options.position, this.options.customContainerClass)
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -107,14 +108,14 @@ class ToastNotifier {
       
       // Update position function
       const updatePosition = () => {
-        const coords = calculatePosition(toast, toastOptions.anchor, toastOptions.position, viewport);
+        const coords = calculatePosition(toast, toastOptions.anchor, toastOptions.position, viewport, toastOptions.preferredAnchorPosition);
         Object.assign(toast.style, {
           position: "fixed",
           top: `${coords.top}px`,
           left: `${coords.left}px`,
           margin: '0',
           zIndex: "1001",
-          overflow: 'auto' // Set overflow to auto for anchored toasts
+          overflow: 'visible' // Set overflow to auto for anchored toasts
         });
 
         // Update droplet and connector
