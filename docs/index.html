@@ -474,16 +474,13 @@ const toast = new ToastNotifier({
   <code class="javascript">
     let newtoast = toast.show('notification has been triggered')
     document.addEventListener('toastClosed', ()=>{
-        console.log('closed that shit')
     })
     document.addEventListener('toastClosed', ()=>{
-        console.log('closed that shit')
     })
 
     //OR
 
     newtoast.addEventListener('toastClosed', ()=>{
-        console.log('closed that shit')
     })
   </code>
   </pre>
