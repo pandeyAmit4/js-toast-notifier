@@ -124,32 +124,40 @@
       width: 2px;
       opacity: 0.5;
       transition: height 0.2s ease;
-      // height: var(--connector-height, 0); // Use connector height directly
+      height: var(--connector-height, 8px); // Add minimum height
     }
 
     // Improve positioning for each direction
+    &[data-point="top"], &[data-point="bottom"] {
+      left: var(--droplet-left);
+      transform: rotate(45deg);
+      
+      &:after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        width: 2px;
+        background-color: inherit;
+        opacity: 0.5;
+        transform-origin: center;
+        height: var(--connector-height, 8px);
+      }
+    }
+
     &[data-point="top"] {
       top: -6px;
-      left: var(--droplet-left, 50%);
-      transform: translateX(-50%) rotate(45deg);
-      box-shadow: -3px -3px 5px rgba(0, 0, 0, 0.05);
       
       &:after {
         top: 100%;
-        left: 50%;
         transform: translateX(-50%);
       }
     }
 
     &[data-point="bottom"] {
       bottom: -6px;
-      left: var(--droplet-left, 50%);
-      transform: translateX(-50%) rotate(45deg);
-      box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.05);
       
       &:after {
         bottom: 100%;
-        left: 50%;
         transform: translateX(-50%);
       }
     }

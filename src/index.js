@@ -114,7 +114,6 @@ class ToastNotifier {
           top: `${coords.top}px`,
           left: `${coords.left}px`,
           margin: '0',
-          zIndex: "1001",
           overflow: 'visible' // Set overflow to auto for anchored toasts
         });
 
@@ -122,10 +121,7 @@ class ToastNotifier {
         const droplet = toast.querySelector('.toast-droplet');
         if (droplet) {
           droplet.setAttribute('data-point', coords.dropletPoint);
-          if (coords.dropletOffset) {
-            toast.style.setProperty('--droplet-left', `calc(50% + ${coords.dropletOffset}px)`);
-          }
-          // Set the connector height
+          toast.style.setProperty('--droplet-left', `${coords.dropletOffset}px`);
           toast.style.setProperty('--connector-height', `${coords.connectorHeight}px`);
         }
       };

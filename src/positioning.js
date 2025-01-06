@@ -76,12 +76,46 @@ export function calculatePosition(toast, anchor, position, viewport, preferredPo
         }
     }
 
-    // Calculate connector height
-    const connectorHeight = position === 'top' ? 
+    // Calculate connector height with a minimum value
+    const minConnectorHeight = 8; // Minimum height for the connector
+    const rawConnectorHeight = position === 'top' ? 
         Math.abs(anchorRect.top - (coords.top + toastRect.height)) :
         Math.abs(coords.top - anchorRect.bottom);
     
-    coords.connectorHeight = connectorHeight;
+    // Ensure minimum connector height and adjust toast position accordingly
+    coords.connectorHeight = Math.max(minConnectorHeight, rawConnectorHeight);
+
+    // Adjust toast position to maintain minimum gap
+    if (shouldPositionTop) {
+        coords.top = anchorRect.top - toastRect.height - minConnectorHeight;
+    } else {
+        coords.top = anchorRect.bottom + minConnectorHeight;
+    }
+
+    // Calculate the anchor's center point
+    const anchorCenter = {
+        x: anchorRect.left + (anchorRect.width / 2),
+        y: anchorRect.top + (anchorRect.height / 2)
+    };
+
+    // Calculate droplet position relative to the anchor's center
+    const dropletOffset = anchorCenter.x - coords.left;
+
+    // Adjust toast position to ensure droplet aligns with anchor
+    if (dropletOffset < 12) {
+        coords.left = anchorRect.left;
+    } else if (dropletOffset > toastRect.width - 12) {
+        coords.left = anchorCenter.x - toastRect.width + 12;
+    }
+
+    // Calculate final droplet offset after toast position adjustment
+    const finalDropletOffset = anchorCenter.x - coords.left;
+
+    coords = {
+        ...coords,
+        dropletOffset: finalDropletOffset,
+        left: Math.max(margin, Math.min(coords.left, viewport.width - toastRect.width - margin))
+    };
 
     return coords;
 }
