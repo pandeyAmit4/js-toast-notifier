@@ -7,12 +7,29 @@ export function createToast(message, options) {
 	const type = options.type || "default"
 
 	toast.className = `toast ${options.customClass || ""}`
-	toast.setAttribute("role", "alert")
-	toast.setAttribute("aria-live", "polite")
+	toast.setAttribute("role", "status") // Change from "alert" to "status" for non-critical messages
+	toast.setAttribute("aria-live", options.type === "error" ? "assertive" : "polite")
 	toast.setAttribute("aria-atomic", "true")
 
-	if (type !== "default") {
-		toast.setAttribute("aria-label", `${type} notification: ${message}`)
+	// Add more descriptive labels based on type
+	const toastTypeLabel = {
+		success: "Success notification",
+		error: "Error notification",
+		warning: "Warning notification",
+		info: "Information notification",
+		default: "Notification"
+	}
+
+	const typeLabel = toastTypeLabel[options.type || "default"]
+	toast.setAttribute("aria-label", `${typeLabel}: ${message}`)
+
+	if (options.showCloseButton !== false) {
+		toast.setAttribute("aria-describedby", "toast-close-instruction")
+		const closeInstruction = document.createElement("span")
+		closeInstruction.id = "toast-close-instruction"
+		closeInstruction.className = "sr-only" // visually hidden but available to screen readers
+		closeInstruction.textContent = "Press Enter to close this notification"
+		toast.appendChild(closeInstruction)
 	}
 
 	Object.assign(toast.style, {
@@ -90,7 +107,7 @@ function createIcon(options, theme) {
 function createCloseButton(theme) {
 	const button = document.createElement("button")
 	button.className = "toast-close"
-	button.setAttribute("aria-label", "Close notification")
+	button.setAttribute("aria-label", "Close this notification")
 	button.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`
 	button.style.color = theme.textColor
 	return button
@@ -102,6 +119,8 @@ function createDroplet(theme) {
 	droplet.setAttribute("role", "presentation")
 	droplet.setAttribute("aria-hidden", "true")
 	droplet.style.backgroundColor = theme.backgroundColor
+	// Set initial data-point attribute
+	droplet.setAttribute("data-point", "top") // Default position
 	return droplet
 }
 

@@ -11,10 +11,9 @@
   min-width: 280px;
   min-height: 20px;
   opacity: 0;
-  overflow: visible;
   padding: 16px;
   position: fixed;
-  overflow: hidden;
+  overflow: visible; // Changed from hidden to visible
   transform: translateY(10px);
   transition: all 0.3s ease;
   z-index: 10000;
@@ -105,54 +104,68 @@
   &-anchored {
     margin: 0;
     position: absolute;
+    overflow: visible; // Changed from auto to visible
   }
 
   &-droplet {
-    height: 12px;
-    transform: rotate(45deg);
-    transition: left 0.3s ease;
+    position: absolute;
     width: 12px;
-    z-index: -1;
+    height: 12px;
+    background: inherit;
+    transform: rotate(45deg);
+    // Remove negative z-index
+    z-index: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); // Add shadow to match toast
 
     &:after {
-      background-color: inherit;
-      bottom: -999px;
-      content: "";
-      left: 50%;
+      content: '';
       position: absolute;
-      top: 100%;
-      transform: translateX(-50%);
+      background-color: inherit;
       width: 2px;
+      opacity: 0.5;
+      transition: height 0.2s ease;
+      // height: var(--connector-height, 0); // Use connector height directly
     }
 
+    // Improve positioning for each direction
     &[data-point="top"] {
-      left: var(--droplet-left, calc(50% - 6px));
       top: -6px;
-
+      left: var(--droplet-left, 50%);
+      transform: translateX(-50%) rotate(45deg);
+      box-shadow: -3px -3px 5px rgba(0, 0, 0, 0.05);
+      
       &:after {
-        display: none;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
       }
     }
 
     &[data-point="bottom"] {
       bottom: -6px;
-      left: var(--droplet-left, calc(50% - 6px));
-
+      left: var(--droplet-left, 50%);
+      transform: translateX(-50%) rotate(45deg);
+      box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.05);
+      
       &:after {
         bottom: 100%;
-        height: var(--droplet-connector-height, 0);
-        top: auto;
+        left: 50%;
+        transform: translateX(-50%);
       }
     }
 
     &[data-point="left"] {
       left: -6px;
-      top: calc(50% - 6px);
+      top: 50%;
+      transform: translateY(-50%) rotate(45deg);
+      box-shadow: -3px 0 5px rgba(0, 0, 0, 0.05);
     }
 
     &[data-point="right"] {
       right: -6px;
-      top: calc(50% - 6px);
+      top: 50%;
+      transform: translateY(-50%) rotate(45deg);
+      box-shadow: 3px 0 5px rgba(0, 0, 0, 0.05);
     }
   }
 }

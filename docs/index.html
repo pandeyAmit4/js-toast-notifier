@@ -6,13 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JS Toast Notifier Documentation</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
-  <!-- <link rel="stylesheet" href="../dist/toast.css"> -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/js-toast-notifier@1.0.6/dist/index.css">
-  <!-- <link rel="stylesheet" href="..//dist/index.css"> -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/js-toast-notifier@1.0.6/dist/index.umd.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/js-toast-notifier@1.0.12/dist/index.css">
+  <!-- <link rel="stylesheet" href="../dist/index.css"> -->
+  <script src="https://cdn.jsdelivr.net/npm/js-toast-notifier@1.0.12/dist/index.umd.js"></script>
   <!-- <script src="../dist/index.umd.js"></script> -->
   <!-- and it's easy to individually load additional languages -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
 
   <script>hljs.highlightAll();</script>
@@ -378,11 +377,11 @@
         <button class="demo-btn" id="bottom-right">Bottom Right</button>
       </div>
     </div>
-
+<!-- <a class="" href="#nogo" id="anchor-toast">Anchored</a> -->
     <div class="section">
       <h2>Advanced Features</h2>
       <div class="button-grid">
-        <!-- <button class="demo-btn" id="anchor-toast">Anchored Toast</button> -->
+        <button class="demo-btn" id="anchor-toast">Anchored Toast</button>
         <button class="demo-btn" id="infinite-toast">Infinite Toast</button>
         <button class="demo-btn" id="no-progress">No Progress Bar</button>
         <button class="demo-btn" id="no-close">No Close Button</button>
@@ -462,8 +461,10 @@ const toast = new ToastNotifier({
   progressHeight: '4px',    // Progress bar height
   progressColor: '#fff',    // Progress bar color
   customClass: 'classname', // Add class on the Toast
+  anchor: document.queryselector('.anchorelement'), // Anchor element
   progressBackground: 'rgba(255, 255, 255, 0.2)', // Progress background
-  customContainerClass: 'class1 class2' // Add custom classes on container
+  customContainerClass: 'class1 class2', // Add custom classes on container
+  preferredAnchorPosition: 'top' // Preferred position for anchored toasts
 });
 </code></pre>
   <h3>toastOpened and Toast Closed Event</h3>
@@ -472,16 +473,13 @@ const toast = new ToastNotifier({
   <code class="javascript">
     let newtoast = toast.show('notification has been triggered')
     document.addEventListener('toastClosed', ()=>{
-        console.log('closed that shit')
     })
     document.addEventListener('toastClosed', ()=>{
-        console.log('closed that shit')
     })
 
     //OR
 
     newtoast.addEventListener('toastClosed', ()=>{
-        console.log('closed that shit')
     })
   </code>
   </pre>
@@ -494,11 +492,10 @@ toast.show('Custom theme!', {
   customClass: 'my-custom-toast'
 });
 
-// Anchored toast with custom position
-toast.show('Anchored to button!', {
+// Anchored toast with preferred bottom position
+toast.show('Anchored below the button!', {
   anchor: document.getElementById('my-button'),
-  position: 'top',
-  timeout: 3000
+  preferredAnchorPosition: 'bottom'
 });
 
 // Toast with custom progress bar
@@ -603,6 +600,13 @@ toast.show('Will not auto-close', { timeout: 0, showProgress: false });
         <td data-label="Possible Values">Any valid CSS class</td>
         <td data-label="Description">Could be used for themes or tracking</td>
       </tr>
+      <tr>
+        <td data-label="Option">preferredAnchorPosition</td>
+        <td data-label="Type">string</td>
+        <td data-label="Default">'top'</td>
+        <td data-label="Possible Values">'top', 'bottom'</td>
+        <td data-label="Description">Preferred position for anchored toasts</td>
+      </tr>
     </table>
 
 
@@ -683,6 +687,30 @@ const toast = new ToastNotifier({
       <li>Respects reduced motion preferences</li>
     </ul>
 
+    <h2>Accessibility Features</h2>
+    <ul>
+      <li>♿ ARIA live regions for real-time notifications</li>
+      <li>🎯 Different ARIA roles based on notification type</li>
+      <li>⌨️ Full keyboard navigation support (Tab, Enter, Space, Escape)</li>
+      <li>📢 Screen reader friendly status messages</li>
+      <li>⏸️ Respects reduced-motion preferences</li>
+      <li>🔍 High contrast mode support</li>
+      <li>📱 Mobile and touch device optimization</li>
+    </ul>
+
+    <h3>Screen Reader Behavior</h3>
+    <pre><code class="javascript">
+// Success notifications are announced politely
+toast.success('Operation completed!');
+
+// Error notifications are announced immediately
+toast.error('Connection failed!', {
+  // Override ARIA attributes
+  role: 'alert',
+  'aria-live': 'assertive'
+});
+    </code></pre>
+
     <h2>Browser Support</h2>
     <ul>
       <li>Chrome (latest)</li>
@@ -743,14 +771,14 @@ const toast = new ToastNotifier({
     });
   });
 
-  // Advanced Features
-  // document.getElementById('anchor-toast').addEventListener('click', (e) => {
-  //     toast.show('This toast is anchored to the button!', {
-  //         anchor: e.target,
-  //         position: 'top',
-  //         timeout: 5000
-  //     });
-  // });
+ // Advanced Features
+  document.getElementById('anchor-toast').addEventListener('click', (e) => {
+      toast.error('This toast is anchored to the button!', {
+          anchor: e.target,
+          timeout: 0,
+          preferredAnchorPosition: 'bottom'
+      });
+  });
 
   document.getElementById('infinite-toast').addEventListener('click', () => {
     toast.info('This toast will not auto-close', {
