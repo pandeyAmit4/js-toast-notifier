@@ -58,8 +58,13 @@ const toast = new ToastNotifier({
   showProgress: true,       // Show progress bar
   progressHeight: '4px',    // Progress bar height
   progressColor: '#fff',    // Progress bar color
-  progressBackground: 'rgba(255, 255, 255, 0.2)' // Progress background
-  customContainerClass: 'class1 class2' // Add custom classes on container
+  progressBackground: 'rgba(255, 255, 255, 0.2)', // Progress background
+  customContainerClass: 'class1 class2', // Add custom classes on container
+  safeMargin: 20,           // Distance from viewport edges
+  role: 'status',           // ARIA role override
+  'aria-live': 'polite',    // ARIA live region behavior
+  reducedMotion: true,      // Honor prefers-reduced-motion
+  mobileBreakpoint: 768     // Custom mobile breakpoint
 });
 ```
 
@@ -204,6 +209,86 @@ The package provides CSS classes for custom styling:
 - Keyboard navigation support
 - Screen reader friendly messages
 - Respects reduced motion preferences
+
+## Accessibility Features
+
+The library provides comprehensive accessibility support:
+
+- Uses appropriate ARIA roles and live regions
+- Supports keyboard navigation
+- Respects reduced-motion preferences
+- Screen reader optimized messaging
+- High contrast theme support
+- Mobile and touch device optimization
+
+### Screen Reader Integration
+
+```javascript
+// Polite announcements for non-critical info
+toast.info('Updates available');
+
+// Immediate announcements for critical info
+toast.error('Connection lost', {
+  role: 'alert',
+  'aria-live': 'assertive'
+});
+```
+
+### Mobile-Specific Behavior
+
+```javascript
+// Toasts are automatically centered on mobile devices
+// Anchored toasts maintain connection while staying readable
+toast.show('Mobile optimized!', {
+  anchor: element,
+  preferredAnchorPosition: 'bottom'
+});
+```
+
+### Viewport Considerations
+
+```javascript
+// Toasts automatically adjust to avoid viewport edges
+toast.show('Always visible!', {
+  position: 'top-right',
+  // Maintains safe distance from viewport edges
+  safeMargin: 20 // optional
+});
+```
+
+## Advanced Configuration
+
+```javascript
+const toast = new ToastNotifier({
+  // ...existing options...
+  safeMargin: 20,           // Distance from viewport edges
+  role: 'status',           // ARIA role override
+  'aria-live': 'polite',    // ARIA live region behavior
+  customContainerClass: 'my-container', // Custom container styling
+  reducedMotion: true,      // Honor prefers-reduced-motion
+  mobileBreakpoint: 768     // Custom mobile breakpoint
+});
+```
+
+## Events
+
+```javascript
+// Listen for toast open
+document.addEventListener('toastOpened', (e) => {
+  const { toast, message, options } = e.detail;
+});
+
+// Listen for toast close
+document.addEventListener('toastClosed', (e) => {
+  const { toast } = e.detail;
+});
+
+// Per-toast listeners
+const myToast = toast.show('Message');
+myToast.addEventListener('toastClosed', () => {
+  // Handle individual toast close
+});
+```
 
 ## Browser Support
 

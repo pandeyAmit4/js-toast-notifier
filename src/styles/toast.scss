@@ -246,3 +246,56 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .toast {
+    min-width: auto;
+    width: calc(100vw - 40px);
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    
+    &-anchored {
+      width: calc(100vw - 40px);
+      left: 50% !important; // Override inline positioning
+      transform: translateX(-50%) !important; // Center horizontally
+      margin: 0;
+    }
+  }
+  
+  .droplet-toast-container {
+    padding: 0 20px;
+    left: 50% !important; // Center the container
+    transform: translateX(-50%) !important; // Center the container
+    width: 100%;
+    max-width: 100vw;
+    
+    &[data-position^="top"],
+    &[data-position^="bottom"] {
+      align-items: center;
+    }
+
+    // Reset individual toast transforms inside container
+    .toast:not(.toast-anchored) {
+      transform: translateY(10px); // Keep original animation
+      left: 0 !important;
+      
+      &.toast-show {
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
+// Add utility class for screen reader only content
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

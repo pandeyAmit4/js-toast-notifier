@@ -2,6 +2,8 @@ export function calculatePosition(toast, anchor, position, viewport, preferredPo
     const anchorRect = typeof anchor === 'function' ? anchor().getBoundingClientRect() : anchor.getBoundingClientRect();
     const toastRect = toast.getBoundingClientRect();
     const gap = 12;
+    const safeMargin = 20; // Add safe margin from viewport edges
+    const isMobile = window.innerWidth <= 768;
 
     // Calculate available space above and below anchor
     const spaceAbove = anchorRect.top;
@@ -111,10 +113,26 @@ export function calculatePosition(toast, anchor, position, viewport, preferredPo
     // Calculate final droplet offset after toast position adjustment
     const finalDropletOffset = anchorCenter.x - coords.left;
 
+    // For mobile devices, center the toast horizontally
+    if (isMobile) {
+        coords.left = Math.max(safeMargin, (viewport.width - toastRect.width) / 2);
+        // Ensure droplet aligns with anchor on mobile
+        coords.dropletOffset = anchorCenter.x - coords.left;
+    } else {
+        // Desktop positioning with edge protection
+        if (coords.left + toastRect.width > viewport.width - safeMargin) {
+            coords.left = viewport.width - toastRect.width - safeMargin;
+        }
+        if (coords.left < safeMargin) {
+            coords.left = safeMargin;
+        }
+    }
+
+    // Ensure toast stays within viewport bounds
     coords = {
         ...coords,
         dropletOffset: finalDropletOffset,
-        left: Math.max(margin, Math.min(coords.left, viewport.width - toastRect.width - margin))
+        left: Math.max(safeMargin, Math.min(coords.left, viewport.width - toastRect.width - safeMargin))
     };
 
     return coords;
