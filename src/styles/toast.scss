@@ -14,8 +14,11 @@
   padding: 16px;
   position: fixed;
   overflow: visible; // Changed from hidden to visible
-  transform: translateY(10px);
-  transition: all 0.3s ease;
+  transform: translateY(16px) scale(0.95);
+  transform-origin: top;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  perspective: 1000px;
+  backface-visibility: hidden;
   z-index: 10000;
 
   &:focus {
@@ -25,7 +28,74 @@
 
   &-show {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+  }
+
+  &.toast-removing {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.95);
+    pointer-events: none;
+  }
+
+  // Different animations based on position
+  .droplet-toast-container[data-position^="bottom"] & {
+    transform: translateY(-16px) scale(0.95);
+    transform-origin: bottom;
+
+    &.toast-show {
+      transform: translateY(0) scale(1);
+    }
+
+    &.toast-removing {
+      transform: translateY(16px) scale(0.95);
+    }
+  }
+
+  // Side positions
+  .droplet-toast-container[data-position^="left"] & {
+    transform: translateX(-16px) scale(0.95);
+    transform-origin: left;
+
+    &.toast-show {
+      transform: translateX(0) scale(1);
+    }
+
+    &.toast-removing {
+      transform: translateX(-16px) scale(0.95);
+    }
+  }
+
+  .droplet-toast-container[data-position^="right"] & {
+    transform: translateX(16px) scale(0.95);
+    transform-origin: right;
+
+    &.toast-show {
+      transform: translateX(0) scale(1);
+    }
+
+    &.toast-removing {
+      transform: translateX(16px) scale(0.95);
+    }
+  }
+
+  // Anchored toasts animation
+  &-anchored {
+    margin: 0;
+    position: absolute;
+    overflow: visible; // Changed from auto to visible
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    &.toast-show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    &.toast-removing {
+      opacity: 0;
+      transform: scale(0.9);
+    }
   }
 
   &-content {
@@ -97,14 +167,12 @@
 		width: 100%;
 		transform: scaleX(0);
 		transform-origin: left;
-		transition: transform 0.3s linear;
-    }
-  }
+		transition: transform 0.3s linear, opacity 0.2s ease;
 
-  &-anchored {
-    margin: 0;
-    position: absolute;
-    overflow: visible; // Changed from auto to visible
+      .toast-removing & {
+        opacity: 0;
+      }
+    }
   }
 
   &-droplet {
@@ -179,6 +247,29 @@
   }
 }
 
+.toast-custom-icon {
+  margin-right: 8px;
+}
+
+.slide-animation {
+  animation: slideIn 0.5s ease forwards;
+}
+
+@keyframes slideIn {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(0); }
+}
+
+/* Update existing pulse animation */
+.pulse-animation {
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
 .droplet-toast-container {
   display: flex;
   flex-direction: column;
@@ -226,6 +317,11 @@
   .toast-droplet,
   .toast-progress-bar {
     transition: none;
+  }
+
+  .toast {
+    transition: opacity 0.1s ease-out;
+    transform: none !important;
   }
 }
 

@@ -35,6 +35,13 @@ export function createToast(message, options) {
 	Object.assign(toast.style, {
 		backgroundColor: theme.backgroundColor,
 		color: theme.textColor,
+		boxShadow: theme.boxShadow || "0 4px 12px rgba(0, 0, 0, 0.15)",
+		// Add subtle border for light themes
+		border: theme.backgroundColor.includes('#FFF') || 
+			   theme.backgroundColor.includes('#EFF') || 
+			   theme.backgroundColor.includes('#ECF') || 
+			   theme.backgroundColor.includes('#FEF') ? 
+			   '1px solid rgba(0,0,0,0.05)' : 'none'
 	})
 
 	const content = createContent(message, options, theme)
@@ -55,6 +62,26 @@ export function createToast(message, options) {
 		const { progressBar, updateProgress } = createProgressBar(options)
 		toast.appendChild(progressBar)
 		toast._updateProgress = updateProgress
+	}
+
+	// Add better RTL support
+	if (document.dir === 'rtl') {
+		toast.setAttribute('dir', 'rtl')
+		toast.style.textAlign = 'right'
+	}
+
+	// Add high contrast support
+	if (window.matchMedia('(forced-colors: active)').matches) {
+		toast.style.forcedColorAdjust = 'none'
+		toast.style.backgroundColor = 'Canvas'
+		toast.style.color = 'CanvasText'
+		toast.style.borderColor = 'CanvasText'
+	}
+
+	// Improve focus management
+	toast.setAttribute("tabindex", "-1")
+	if (options.type === "error") {
+		requestAnimationFrame(() => toast.focus())
 	}
 
 	toast.setAttribute("tabindex", "0")
@@ -82,7 +109,8 @@ function createContent(message, options, theme) {
 	wrapper.className = "toast-content"
 	wrapper.setAttribute("role", "presentation")
 
-	if (options.type && defaultIcons[options.type]) {
+	// Only add default icon if no custom icon is provided
+	if (!options.icon && options.type && defaultIcons[options.type]) {
 		const icon = createIcon(options, theme)
 		wrapper.appendChild(icon)
 	}

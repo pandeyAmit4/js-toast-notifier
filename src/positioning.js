@@ -135,5 +135,40 @@ export function calculatePosition(toast, anchor, position, viewport, preferredPo
         left: Math.max(safeMargin, Math.min(coords.left, viewport.width - toastRect.width - safeMargin))
     };
 
+    // Handle software keyboard
+    const visualViewport = window.visualViewport;
+    if (visualViewport) {
+        coords.top = Math.min(coords.top, visualViewport.height - toast.offsetHeight - 10);
+    }
+
+    // Add touch gesture support
+    if ('ontouchstart' in window) {
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        toast.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        toast.addEventListener('touchmove', (e) => {
+            const deltaX = e.touches[0].clientX - touchStartX;
+            if (Math.abs(deltaX) > 50) {
+                e.preventDefault();
+                toast.style.transform = `translateX(${deltaX}px)`;
+            }
+        }, { passive: false });
+
+        toast.addEventListener('touchend', (e) => {
+            const deltaX = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(deltaX) > 100) {
+                toast.style.transform = `translateX(${deltaX > 0 ? '100%' : '-100%'})`;
+                setTimeout(() => toast.remove(), 300);
+            } else {
+                toast.style.transform = '';
+            }
+        });
+    }
+
     return coords;
 }

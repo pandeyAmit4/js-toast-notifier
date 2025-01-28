@@ -31,5 +31,25 @@ export function getOrCreateContainer(position = "top-right", customContainerClas
 		container.className = mergedClasses.join(" ") // Convert array to a space-separated string
 	}
 
+	// Add cleanup for disconnected containers
+	if (!container.observer) {
+		container.observer = new MutationObserver((mutations) => {
+			mutations.forEach((mutation) => {
+				if (mutation.type === 'childList') {
+					// Cleanup disconnected toasts
+					mutation.removedNodes.forEach((node) => {
+						if (node.classList?.contains('toast')) {
+							node.remove();
+							// Clear any timers/listeners
+							node._cleanup?.();
+						}
+					});
+				}
+			});
+		});
+		
+		container.observer.observe(container, { childList: true });
+	}
+
 	return container
 }
