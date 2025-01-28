@@ -13,7 +13,7 @@
   opacity: 0;
   padding: 16px;
   position: fixed;
-  overflow: visible; // Changed from hidden to visible
+  overflow: hidden; // Changed from visible to hidden to clip progress bar
   transform: translateY(16px) scale(0.95);
   transform-origin: top;
   transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -157,9 +157,6 @@
 	height: var(--progress-height, 4px);
 	width: 100%;
 	z-index: 1;
-	/* Match the toast's border-radius on the bottom corners only */
-	border-bottom-left-radius: 8px;
-	border-bottom-right-radius: 8px;
 
     &-bar {
      	background: var(--progress-color, hsla(0, 0%, 100%, 0.7));

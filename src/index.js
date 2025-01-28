@@ -289,4 +289,11 @@ class ToastNotifier {
   }
 }
 
+// Export both as default and named export
 export { ToastNotifier };
+export default ToastNotifier;
+
+// Add this line to expose ToastNotifier globally when used via CDN
+if (typeof window !== 'undefined') {
+  window.ToastNotifier = ToastNotifier;
+}

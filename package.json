@@ -10,8 +10,8 @@
 	"unpkg": "dist/index.umd.js",
 	"scripts": {
 		"prebuild": "sass src/styles:dist --no-source-map --style=compressed --load-path=node_modules",
-		"build": "microbundle --config --no-sourcemap",
-		"dev": "microbundle watch  --config --no-sourcemap",
+		"build": "microbundle --config --no-sourcemap --globals jsToastNotifier=ToastNotifier --define process.env.NODE_ENV=production",
+		"dev": "microbundle watch --config --no-sourcemap --globals jsToastNotifier=ToastNotifier",
 		"test": "vitest"
 	},
 	"exports": {

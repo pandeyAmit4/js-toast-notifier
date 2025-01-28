@@ -445,10 +445,12 @@
 &lt;script src="https://cdn.jsdelivr.net/npm/js-toast-notifier/dist/index.umd.js"&gt;&lt;/script&gt;
 
 &lt;script&gt;
-  // The library is available as jsToastNotifier global variable
-  const toast = new jsToastNotifier.ToastNotifier();
+  // You can use it directly
+  const toast = new ToastNotifier();
   
-  // Use it directly
+  // Or access via namespace if needed
+  const toast2 = new ToastNotifier();
+  
   toast.success('It works!');
 &lt;/script&gt;</code></pre>
 
@@ -781,7 +783,6 @@ toast.error('Connection failed!', {
 </body>
 <script type="module">
   // import {ToastNotifier} from 'js-toast-notifier';
-  let ToastNotifier = jsToastNotifier.ToastNotifier
   // Initialize with default options
   const toast = new ToastNotifier({
     position: 'top-right',

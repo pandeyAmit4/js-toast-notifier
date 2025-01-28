@@ -1,3 +1,4 @@
+export default ToastNotifier;
 export class ToastNotifier {
     constructor(options: any);
     options: any;
