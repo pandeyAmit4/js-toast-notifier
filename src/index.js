@@ -87,14 +87,12 @@ class ToastNotifier {
     // Force reflow to ensure animation plays
     void toast.offsetHeight;
 
-    // Add show class in next frame for animation
+    // Changed: use a single requestAnimationFrame to add "toast-show" and trigger progress update
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        toast.classList.add("toast-show");
-        if (toast._updateProgress && toastOptions.timeout) {
-          toast._updateProgress(false);
-        }
-      });
+      toast.classList.add("toast-show");
+      if (toast._updateProgress && toastOptions.timeout) {
+        toast._updateProgress(false);
+      }
     });
 
     if (toastOptions.animationClass) {
